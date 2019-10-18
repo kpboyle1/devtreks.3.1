@@ -23,7 +23,7 @@ namespace DevTreks
     ///Author:		www.devtreks.org
     ///Date:		2019, October
     ///References:	www.devtreks.org
-    ///NOTES:       Version 2.2.0 upgraded to netcore3+
+    ///NOTES:       Version 2.2.0 upgraded to netcore3+ 
     /// </summary>
     public class Startup
     {
