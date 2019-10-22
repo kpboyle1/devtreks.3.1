@@ -146,11 +146,38 @@ namespace DevTreks
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DebugConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                    Configuration.GetConnectionString("ReleaseConnection")));
+            //minimal changes are made to the Identity razor package
+            //but still scaffolds the full Identity razor package 
+            //to get a better idea of what's going on
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+            //and to make sure it's using the latest package
+            services
+                .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddRazorPagesOptions(options =>
+                {
+                    //options.AllowAreas = true;
+                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+                });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
+
+            // using Microsoft.AspNetCore.Identity.UI.Services;
+            services.AddSingleton<IEmailSender, EmailSender>();
+
+
+
             services.AddControllersWithViews();
             services.AddRazorPages();
+
             services.Configure<DevTreks.Data.ContentURI>(ContentURI =>
             {
                 //azure is debugged by commenting in and out the azure appsettings

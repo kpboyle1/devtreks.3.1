@@ -1526,7 +1526,7 @@ namespace DevTreks.Extensions
             return dbActualNutValuePerHHMRefuse;
         }
         
-        private double SetPortionWeightAndUnit()
+        public double SetPortionWeightAndUnit()
         {
             double dbCM = 0;
             if (this.WeightToUseType == WEIGHT_TOUSE_TYPES.weight2.ToString())

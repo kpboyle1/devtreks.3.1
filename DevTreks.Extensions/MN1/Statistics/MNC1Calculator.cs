@@ -12,7 +12,7 @@ namespace DevTreks.Extensions
     ///Purpose:		Serialize and deserialize a food nutrition cost object.
     ///             This calculator is used with inputs to calculate costs.
     ///Author:		www.devtreks.org
-    ///Date:		2014, June
+    ///Date:		2019, October
     ///References:	www.devtreks.org/helptreks/linkedviews/help/linkedview/HelpFile/148
     ///NOTES        1. Extends the base object MNSR1 object
     ///</summary>
@@ -145,11 +145,18 @@ namespace DevTreks.Extensions
         private void UpdateBaseInputUnitPrices(
              CalculatorParameters calcParameters)
         {
-            //is being able to change ins and outs in tech elements scalable?? double check
-
             //check illegal divisors
             this.ContainerSizeInSSUnits = (this.ContainerSizeInSSUnits == 0)
                 ? -1 : this.ContainerSizeInSSUnits;
+            //220 potential bugs
+            this.TypicalServingSize = (this.TypicalServingSize == 0)
+                ? -1 : this.TypicalServingSize;
+            if (this.TypicalServingSize == -1)
+            {
+                double dbCM = this.SetPortionWeightAndUnit();
+            }
+            this.ActualServingSize = (this.ActualServingSize == 0)
+                ? -1 : this.ActualServingSize;
             this.TypicalServingsPerContainer = this.ContainerSizeInSSUnits / this.TypicalServingSize;
             this.ActualServingsPerContainer = this.ContainerSizeInSSUnits / this.ActualServingSize;
             //Actual serving size has to be 1 unit of hh measure
