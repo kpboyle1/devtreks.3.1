@@ -415,7 +415,8 @@ namespace DevTreks.Services.Helpers
                     if (docToCalcURI.URINodeName != DataAppHelpers.Economics1.BUDGET_TYPES.budgettimeperiod.ToString()
                         && docToCalcURI.URINodeName != DataAppHelpers.Economics1.INVESTMENT_TYPES.investmenttimeperiod.ToString())
                     {
-                        bStillNeedsSave = false;
+                        //220 doesn't generate a technical bug; but stay consistent with prices bug
+                        bStillNeedsSave = true;
                     }
                 }
                 else if (docToCalcURI.URIDataManager.AppType
