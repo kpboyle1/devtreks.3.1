@@ -71,7 +71,7 @@
       <strong>Component Group</strong> : <xsl:value-of select="@Name" />
     </h4>
 		<xsl:variable name="calculatorid"><xsl:value-of select="@CalculatorId"/></xsl:variable>
-		<xsl:apply-templates select="root/linkedview[@Id=$calculatorid]">
+		<xsl:apply-templates select="root/linkedview[@RelatedCalculatorType='agmachinery']">
 			<xsl:with-param name="localName"><xsl:value-of select="local-name()" /></xsl:with-param>
 		</xsl:apply-templates>
     <xsl:apply-templates select="component">
@@ -83,7 +83,7 @@
       <strong>Component </strong> : <xsl:value-of select="@Name" />(Amount:&#xA0;<xsl:value-of select="@Amount" />;&#xA0;Date:&#xA0;<xsl:value-of select="@Date" />
     </h4>
 		<xsl:variable name="calculatorid"><xsl:value-of select="@CalculatorId"/></xsl:variable>
-		<xsl:apply-templates select="root/linkedview[@Id=$calculatorid]">
+		<xsl:apply-templates select="root/linkedview[@RelatedCalculatorType='agmachinery']">
 			<xsl:with-param name="localName"><xsl:value-of select="local-name()" /></xsl:with-param>
 		</xsl:apply-templates>
 		<xsl:apply-templates select="componentinput">

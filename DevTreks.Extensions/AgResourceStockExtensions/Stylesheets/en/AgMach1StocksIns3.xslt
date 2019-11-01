@@ -92,7 +92,7 @@
 			<td colspan="10"><strong>Group Totals</strong></td>
 		</tr>
 		<xsl:variable name="calculatorid"><xsl:value-of select="@CalculatorId"/></xsl:variable>
-		<xsl:apply-templates select="root/linkedview[@Id=$calculatorid]">
+		<xsl:apply-templates select="root/linkedview[@RelatedCalculatorType='agmachinery']">
 			<xsl:with-param name="localName"><xsl:value-of select="local-name()" /></xsl:with-param>
 		</xsl:apply-templates>
 	</xsl:template>

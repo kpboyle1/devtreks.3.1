@@ -86,7 +86,7 @@
 			</td>
 		</tr>
 		<xsl:variable name="calculatorid"><xsl:value-of select="@CalculatorId"/></xsl:variable>
-		<xsl:apply-templates select="root/linkedview[@Id=$calculatorid]">
+		<xsl:apply-templates select="root/linkedview[@RelatedCalculatorType='agmachinery']">
 			<xsl:with-param name="localName"><xsl:value-of select="local-name()" /></xsl:with-param>
 		</xsl:apply-templates>
     <xsl:apply-templates select="investment">
@@ -105,7 +105,7 @@
 			</td>
 		</tr>
 		<xsl:variable name="calculatorid"><xsl:value-of select="@CalculatorId"/></xsl:variable>
-		<xsl:apply-templates select="root/linkedview[@Id=$calculatorid]">
+		<xsl:apply-templates select="root/linkedview[@RelatedCalculatorType='agmachinery']">
 			<xsl:with-param name="localName"><xsl:value-of select="local-name()" /></xsl:with-param>
 		</xsl:apply-templates>
     <xsl:apply-templates select="investmenttimeperiod">
@@ -274,7 +274,7 @@
 			<th scope="col" colspan="10"><strong>Time Period Totals</strong></th>
 		</tr>
 		<xsl:variable name="calculatorid"><xsl:value-of select="@CalculatorId"/></xsl:variable>
-		<xsl:apply-templates select="root/linkedview[@Id=$calculatorid]">
+		<xsl:apply-templates select="root/linkedview[@RelatedCalculatorType='agmachinery']">
 			<xsl:with-param name="localName"><xsl:value-of select="local-name()" /></xsl:with-param>
 		</xsl:apply-templates>
 	</xsl:template>
@@ -293,7 +293,7 @@
 			</td>
 		</tr>
 		<xsl:variable name="calculatorid"><xsl:value-of select="@CalculatorId"/></xsl:variable>
-		<xsl:apply-templates select="root/linkedview[@Id=$calculatorid]">
+		<xsl:apply-templates select="root/linkedview[@RelatedCalculatorType='agmachinery']">
 			<xsl:with-param name="localName"><xsl:value-of select="local-name()" /></xsl:with-param>
 		</xsl:apply-templates>
     <xsl:apply-templates select="investmentoutput">
@@ -317,7 +317,7 @@
 			</td>
 		</tr>
 		<xsl:variable name="calculatorid"><xsl:value-of select="@CalculatorId"/></xsl:variable>
-		<xsl:apply-templates select="root/linkedview[@Id=$calculatorid]">
+		<xsl:apply-templates select="root/linkedview[@RelatedCalculatorType='agmachinery']">
 			<xsl:with-param name="localName"><xsl:value-of select="local-name()" /></xsl:with-param>
 		</xsl:apply-templates>
     <xsl:apply-templates select="investmentinput">

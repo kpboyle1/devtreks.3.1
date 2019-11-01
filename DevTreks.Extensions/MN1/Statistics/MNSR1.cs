@@ -1478,9 +1478,9 @@ namespace DevTreks.Extensions
                 this.ActualFA_Mono_g = GetActualFoodNutrientProperty(this.FA_Mono_g);
                 this.ActualFA_Poly_g = GetActualFoodNutrientProperty(this.FA_Poly_g);
                 this.ActualCholestrl_mg = GetActualFoodNutrientProperty(this.Cholestrl_mg);
-                //actual = typical
-                this.ActualExtra1 = this.Extra1;
-                this.ActualExtra2 = this.Extra2;
+                //220 : same actual adjustment as rest -GHG emissions tied to actual material amount
+                this.ActualExtra1 = GetActualFoodNutrientProperty(this.Extra1);
+                this.ActualExtra2 = GetActualFoodNutrientProperty(this.Extra2);
                 bHasCalculations = true;
             }
             else
