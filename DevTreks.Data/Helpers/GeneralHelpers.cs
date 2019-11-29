@@ -12,7 +12,7 @@ namespace DevTreks.Data.Helpers
     /// <summary>
     ///Purpose:		General constants, enums and utilities
     ///Author:		www.devtreks.org
-    ///Date:		2019, October
+    ///Date:		2019, November
     ///References:	www.devtreks.org/helptreks/linkedviews/help/linkedview/HelpFile/148
     /// </summary>
     public static class GeneralHelpers
@@ -2428,6 +2428,27 @@ namespace DevTreks.Data.Helpers
             }
             return sDirectoryPath;
         }
+        //220 parse lastUpdate date
+        public static string GetEndSubstring(string delimitedString, string delimiter)
+        {
+            string sLastSub = string.Empty;
+            string sSubstring = string.Empty;
+            if (delimitedString != string.Empty && delimitedString != null)
+            {
+                int iParamIndex = delimitedString.LastIndexOf(delimiter);
+                if (iParamIndex > 0)
+                {
+                    int iSubstringLength = delimitedString.Length - iParamIndex;
+                    sSubstring = delimitedString.Substring(iParamIndex, iSubstringLength);
+                }
+                else
+                {
+                    sSubstring = delimitedString;
+                }
+            }
+            sLastSub = sSubstring.Replace(delimiter, string.Empty).TrimStart();
+            return sLastSub;
+        }
         public static string GetLastSubString(string delimitedString, string delimiter)
         {
             string sSubstring = string.Empty;
@@ -2657,6 +2678,7 @@ namespace DevTreks.Data.Helpers
             }
             return sDocPathWithExtension;
         }
+        
         /// <summary>
         /// Retrieve a starting full sub string from a full string 
         /// based on the name passed in
@@ -2683,6 +2705,7 @@ namespace DevTreks.Data.Helpers
                 fullSubString = fullString;
             }
         }
+        
         public static void GetSubstringsSeparateLast(string fullString,
             string pathDelimiter, out string newFullString, 
             out string lastSubstring)

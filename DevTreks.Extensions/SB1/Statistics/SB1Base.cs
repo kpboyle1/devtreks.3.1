@@ -13,7 +13,7 @@ namespace DevTreks.Extensions
     /// <summary>
     ///Purpose:		Serialize and deserialize a Stock object with up to 20 indicators
     ///Author:		www.devtreks.org
-    ///Date:		2019, October
+    ///Date:		2019, November
     ///NOTES        1. These support unit input and output indicators. The Q must be set in 
     ///             the Op/Comp/Outcome.
     ///             In preparation for the machine learning algorithms, Version 2.1.4 made 
@@ -13686,7 +13686,6 @@ namespace DevTreks.Extensions
             }
             catch (Exception x)
             {
-                
                 //dataurl has to be http or https (has to come from resource base element url)
                 if (x.Message.Contains("404"))
                 {
@@ -14125,8 +14124,7 @@ namespace DevTreks.Extensions
                 || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
                 || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm16)
                 || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm17)
-                || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18)
-                || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18))
             {
                 //212 Score analysis
                 if (indicatorIndex == 0
@@ -14146,6 +14144,40 @@ namespace DevTreks.Extensions
                     else
                     {
                         sAlgo = await ProcessAlgosAsync4(indicatorIndex, indicatorURL);
+                    }
+                }
+            }
+            else if (HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
+               || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
+            {
+                //version 2.2.0 stores subalgo 19 or 20 budget in first url 
+                //and optional subalgo16 budget in 2nd (but this code doesn't require the 2nd)
+                string sDataURL1 = string.Empty;
+                string sDataURL2 = string.Empty;
+                string[] dataURLs = indicatorURL.Split(Constants.STRING_DELIMITERS);
+                string sMathResults = qt1.MathResult;
+                for (int i = 0; i < dataURLs.Count(); i++)
+                {
+                    //220: mathresults hold 2 urls
+                    SetMathResultURL(indicatorIndex, i, sMathResults);
+                    if (i == 0)
+                    {
+                        sDataURL1 = dataURLs[i];
+                        //1st dataset uses subalgo 19 or 29
+                        sAlgo = await ProcessAlgosAsync4(indicatorIndex, sDataURL1);
+                    }
+                    else if (i == 1)
+                    {
+                        sDataURL2 = dataURLs[i];
+                        //2nd dataset uses budget subalgo
+                        string sOldSubMathType = SetSubAlgorithm(indicatorIndex, qt1,
+                            MATH_SUBTYPES.subalgorithm16.ToString());
+                        sAlgo = await ProcessAlgosAsync4(indicatorIndex, sDataURL2);
+                        //reset both original math urls
+                        SetMathResultURL(indicatorIndex, -1, sMathResults);
+                        //reset subalgo
+                        sOldSubMathType = SetSubAlgorithm(indicatorIndex, qt1,
+                            sOldSubMathType);
                     }
                 }
             }
@@ -14442,6 +14474,223 @@ namespace DevTreks.Extensions
                 sLabel = SB1Label20;
             }
             return sLabel;
+        }
+        //version 2.2.0 some algos have 2 mathurls in Indicator.MathResult
+        public void SetMathResultURL(int indicatorIndex, int mathURLIndex, 
+            string originalMathResults)
+        {
+            string sMathURL = originalMathResults;
+            string[] mathURLs = originalMathResults.Split(Constants.STRING_DELIMITERS);
+            if (mathURLIndex == -1)
+            {
+                //restore the original 2 urls
+                sMathURL = originalMathResults;
+            }
+            else
+            {
+                //parse the 2 math result urls
+                if (mathURLs.Count() > mathURLIndex)
+                {
+                    sMathURL = mathURLs[mathURLIndex];
+                }
+            }
+            if (indicatorIndex == 0)
+            {
+                this.SB1ScoreMathResult = sMathURL;
+            }
+            else if (indicatorIndex == 1)
+            {
+                SB1MathResult1 = sMathURL;
+            }
+            else if (indicatorIndex == 2)
+            {
+                SB1MathResult2 = sMathURL;
+            }
+            else if (indicatorIndex == 3)
+            {
+                SB1MathResult3 = sMathURL;
+            }
+            else if (indicatorIndex == 4)
+            {
+                SB1MathResult4 = sMathURL;
+            }
+            else if (indicatorIndex == 5)
+            {
+                SB1MathResult5 = sMathURL;
+            }
+            else if (indicatorIndex == 6)
+            {
+                SB1MathResult6 = sMathURL;
+            }
+            else if (indicatorIndex == 7)
+            {
+                SB1MathResult7 = sMathURL;
+            }
+            else if (indicatorIndex == 8)
+            {
+                SB1MathResult8 = sMathURL;
+            }
+            else if (indicatorIndex == 9)
+            {
+                SB1MathResult9 = sMathURL;
+            }
+            else if (indicatorIndex == 10)
+            {
+                SB1MathResult10 = sMathURL;
+            }
+            else if (indicatorIndex == 11)
+            {
+                SB1MathResult11 = sMathURL;
+            }
+            else if (indicatorIndex == 12)
+            {
+                SB1MathResult12 = sMathURL;
+            }
+            else if (indicatorIndex == 13)
+            {
+                SB1MathResult13 = sMathURL;
+            }
+            else if (indicatorIndex == 14)
+            {
+                SB1MathResult14 = sMathURL;
+            }
+            else if (indicatorIndex == 15)
+            {
+                SB1MathResult15 = sMathURL;
+            }
+            else if (indicatorIndex == 16)
+            {
+                SB1MathResult16 = sMathURL;
+            }
+            else if (indicatorIndex == 17)
+            {
+                SB1MathResult17 = sMathURL;
+            }
+            else if (indicatorIndex == 18)
+            {
+                SB1MathResult18 = sMathURL;
+            }
+            else if (indicatorIndex == 19)
+            {
+                SB1MathResult19 = sMathURL;
+            }
+            else if (indicatorIndex == 20)
+            {
+                SB1MathResult20 = sMathURL;
+            }
+        }
+        //version 2.2.0 some algos run 2 different algos for each indicator
+        public string SetSubAlgorithm(int indicatorIndex, IndicatorQT1 qt1,
+            string newSubAlgo)
+        {
+            string sOldSubAlgo = string.Empty;
+            qt1.MathSubType = newSubAlgo;
+            if (indicatorIndex == 0)
+            {
+                sOldSubAlgo = this.SB1ScoreMathSubType;
+                this.SB1ScoreMathSubType = newSubAlgo;
+            }
+            else if (indicatorIndex == 1)
+            {
+                sOldSubAlgo = SB1MathSubType1;
+                SB1MathSubType1 = newSubAlgo;
+            }
+            else if (indicatorIndex == 2)
+            {
+                sOldSubAlgo = SB1MathSubType2;
+                SB1MathSubType2 = newSubAlgo;
+            }
+            else if (indicatorIndex == 3)
+            {
+                sOldSubAlgo = SB1MathSubType3;
+                SB1MathSubType3 = newSubAlgo;
+            }
+            else if (indicatorIndex == 4)
+            {
+                sOldSubAlgo = SB1MathSubType4;
+                SB1MathSubType4 = newSubAlgo;
+            }
+            else if (indicatorIndex == 5)
+            {
+                sOldSubAlgo = SB1MathSubType5;
+                SB1MathSubType5 = newSubAlgo;
+            }
+            else if (indicatorIndex == 6)
+            {
+                sOldSubAlgo = SB1MathSubType6;
+                SB1MathSubType6 = newSubAlgo;
+            }
+            else if (indicatorIndex == 7)
+            {
+                sOldSubAlgo = SB1MathSubType7;
+                SB1MathSubType7 = newSubAlgo;
+            }
+            else if (indicatorIndex == 8)
+            {
+                sOldSubAlgo = SB1MathSubType8;
+                SB1MathSubType8 = newSubAlgo;
+            }
+            else if (indicatorIndex == 9)
+            {
+                sOldSubAlgo = SB1MathSubType9;
+                SB1MathSubType9 = newSubAlgo;
+            }
+            else if (indicatorIndex == 10)
+            {
+                sOldSubAlgo = SB1MathSubType10;
+                SB1MathSubType10 = newSubAlgo;
+            }
+            else if (indicatorIndex == 11)
+            {
+                sOldSubAlgo = SB1MathSubType11;
+                SB1MathSubType11 = newSubAlgo;
+            }
+            else if (indicatorIndex == 12)
+            {
+                sOldSubAlgo = SB1MathSubType12;
+                SB1MathSubType12 = newSubAlgo;
+            }
+            else if (indicatorIndex == 13)
+            {
+                sOldSubAlgo = SB1MathSubType13;
+                SB1MathSubType13 = newSubAlgo;
+            }
+            else if (indicatorIndex == 14)
+            {
+                sOldSubAlgo = SB1MathSubType14;
+                SB1MathSubType14 = newSubAlgo;
+            }
+            else if (indicatorIndex == 15)
+            {
+                sOldSubAlgo = SB1MathSubType15;
+                SB1MathSubType15 = newSubAlgo;
+            }
+            else if (indicatorIndex == 16)
+            {
+                sOldSubAlgo = SB1MathSubType16;
+                SB1MathSubType16 = newSubAlgo;
+            }
+            else if (indicatorIndex == 17)
+            {
+                sOldSubAlgo = SB1MathSubType17;
+                SB1MathSubType17 = newSubAlgo;
+            }
+            else if (indicatorIndex == 18)
+            {
+                sOldSubAlgo = SB1MathSubType18;
+                SB1MathSubType18 = newSubAlgo;
+            }
+            else if (indicatorIndex == 19)
+            {
+                sOldSubAlgo = SB1MathSubType19;
+                SB1MathSubType19 = newSubAlgo;
+            }
+            else if (indicatorIndex == 20)
+            {
+                sOldSubAlgo = SB1MathSubType20;
+                SB1MathSubType20 = newSubAlgo;
+            }
+            return sOldSubAlgo;
         }
         public bool HasMathType(int indicatorIndex,
             Calculator1.MATH_TYPES algorithm, Calculator1.MATH_SUBTYPES subAlgorithm)

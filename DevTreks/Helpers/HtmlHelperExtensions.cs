@@ -3821,6 +3821,9 @@ namespace DevTreks.Helpers
                             result.Write("<br/>");
                             result.WriteLine(helper.MetaItem(string.Empty, "thumbnailUrl", sThumbnailURI));
                             result.WriteLine(helper.MetaItem(string.Empty, "contentUrl", sMediaURI));
+                            //220 : upload date has to be parsed from "The resource was saved successfully on: 7/25/2018 6:23:35 PM
+                            string sUploadDate = GeneralHelpers.GetEndSubstring(model.URIDataManager.Description, "The resource was saved successfully on: ");
+                            result.WriteLine(helper.MetaItem(string.Empty, "uploadDate", sUploadDate));
                             result.WriteLine(helper.VideoItemStart("controls", sThumbnailURI, "300", "300", "none"));
                             result.WriteLine(helper.SourceItem(sMediaURI, "video/mp4"));
                             result.WriteLine(helper.VideoEnd());
@@ -4293,6 +4296,9 @@ namespace DevTreks.Helpers
                                         result.Write("<br/>");
                                         result.WriteLine(helper.MetaItem(string.Empty, "thumbnailUrl", sThumbnailURI));
                                         result.WriteLine(helper.MetaItem(string.Empty, "contentUrl", resourceparam));
+                                        //220 : upload date has to be parsed from "The resource was saved successfully on: 7/25/2018 6:23:35 PM
+                                        string sUploadDate = GeneralHelpers.GetEndSubstring(linkedview.URIDataManager.Description, "The resource was saved successfully on: ");
+                                        result.WriteLine(helper.MetaItem(string.Empty, "uploadDate", sUploadDate));
                                         result.WriteLine(helper.VideoItemStart("controls", sThumbnailURI, "300", "300", "none"));
                                         result.WriteLine(helper.SourceItem(resourceparam, "video/mp4"));
                                         result.WriteLine(helper.VideoEnd());

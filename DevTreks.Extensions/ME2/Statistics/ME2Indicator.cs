@@ -13,7 +13,7 @@ namespace DevTreks.Extensions
     /// <summary>
     ///Purpose:		Add monitoring and evaluation indicators to DevTreks input, 
     ///             output, operation/component, outcome, and budget elements. 
-    ///Date:		2019, October
+    ///Date:		2019, November
     ///References:	Monitoring and Evaluation Tutorials
     ///NOTES:       Version 2.0.4 upgraded to similar properties and methods as 
     ///             the ResourceStockCalculator to promote consistency in the use 
@@ -1402,8 +1402,7 @@ namespace DevTreks.Extensions
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm16)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm17)
-                || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18)
-                || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18))
             {
                 //212 Score analysis
                 if (indicatorIndex == 0
@@ -1423,6 +1422,38 @@ namespace DevTreks.Extensions
                     else
                     {
                         sAlgo = await ProcessAlgosAsync4(indicatorIndex, ME2Indicators[indicatorIndex].IndURL);
+                    }
+                }
+            }
+            else if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
+               || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
+            {
+                //version 2.2.0 stores subalgo 19 or 20 budget in first url 
+                //and optional subalgo16 budget in 2nd (but this code doesn't require the 2nd)
+                string sDataURL1 = string.Empty;
+                string sDataURL2 = string.Empty;
+                string[] dataURLs = ME2Indicators[indicatorIndex].IndURL.Split(Constants.STRING_DELIMITERS);
+                string sMathResults = ME2Indicators[indicatorIndex].IndMathResult;
+                for (int i = 0; i < dataURLs.Count(); i++)
+                {
+                    //220: mathresults hold 2 urls
+                    SetMathResultURL(indicatorIndex, i, sMathResults);
+                    if (i == 0)
+                    {
+                        sDataURL1 = dataURLs[i];
+                        //1st dataset uses subalgo 19 or 29
+                        sAlgo = await ProcessAlgosAsync4(indicatorIndex, sDataURL1);
+                    }
+                    else if (i == 1)
+                    {
+                        sDataURL2 = dataURLs[i];
+                        //2nd dataset uses budget subalgo
+                        string sOldSubMathType = SetSubAlgorithm(indicatorIndex, MATH_SUBTYPES.subalgorithm16.ToString());
+                        sAlgo = await ProcessAlgosAsync4(indicatorIndex, sDataURL2);
+                        //reset both original math urls
+                        SetMathResultURL(indicatorIndex, -1, sMathResults);
+                        //reset subalgo
+                        sOldSubMathType = SetSubAlgorithm(indicatorIndex, sOldSubMathType);
                     }
                 }
             }
@@ -1870,7 +1901,35 @@ namespace DevTreks.Extensions
             }
             return bHasMathType;
         }
-        
+        //version 2.2.0 some algos have 2 mathurls in Indicator.MathResult
+        public void SetMathResultURL(int indicatorIndex, int mathURLIndex,
+            string originalMathResults)
+        {
+            string sMathURL = originalMathResults;
+            string[] mathURLs = originalMathResults.Split(Constants.STRING_DELIMITERS);
+            if (mathURLIndex == -1)
+            {
+                //restore the original 2 urls
+                sMathURL = originalMathResults;
+            }
+            else
+            {
+                //parse the 2 math result urls
+                if (mathURLs.Count() > mathURLIndex)
+                {
+                    sMathURL = mathURLs[mathURLIndex];
+                }
+            }
+            ME2Indicators[indicatorIndex].IndMathResult = sMathURL;
+        }
+        //version 2.2.0 some algos run 2 different algos for each indicator
+        public string SetSubAlgorithm(int indicatorIndex, string newSubAlgo)
+        {
+            string sOldSubAlgo = string.Empty;
+            sOldSubAlgo = ME2Indicators[indicatorIndex].IndMathSubType;
+            ME2Indicators[indicatorIndex].IndMathSubType = newSubAlgo;
+            return sOldSubAlgo;
+        }
         private void SetTotalMathTypeStock(int indicatorIndex)
         {
             if (indicatorIndex == 0)
