@@ -152,7 +152,8 @@ namespace DevTreks.Extensions.ME2Statistics
                 || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm16)
                 || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm17)
                 || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18)
-                || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
+                || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
             {
                 //if its a good exceedance probability calc returns the string
                 algoindicator = await SetDRR2IndicatorStats(index, colNames, data,

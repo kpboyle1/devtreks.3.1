@@ -310,7 +310,8 @@ namespace DevTreks.Extensions
             subalgorithm17 = 17,
             subalgorithm18 = 18,
             subalgorithm19 = 19,
-            subalgorithm20 = 20
+            subalgorithm20 = 20,
+            subalgorithm21 = 21
         }
         public enum MATHML_SUBTYPES
         {

@@ -280,19 +280,15 @@ namespace DevTreks.Data.Helpers
             data = Encoding.UTF8.GetBytes(ReadText(uri, fullURIPath));
             return data;
         }
-        
+        //2.20 had to go back to c#7.3 because of ef 3.1+
         public async Task<List<string>> ReadLinesAsync(string filePath, int rowIndex = -1)
         {
-            List<string> allLines = new List<string>();
-            var lines = ReadAllLines(filePath, rowIndex);
-	        await foreach (var line in lines)
-            {
-                allLines.Add(line);
-            }
-            return allLines;
+            var lines = await ReadAllLines(filePath, rowIndex);
+            return lines;
         }
-        private static async IAsyncEnumerable<string> ReadAllLines(string filePath, int rowIndex)
+        private static async Task<List<string>> ReadAllLines(string filePath, int rowIndex)
         {
+            List<string> allLines = new List<string>();
             //conversion from excel to text is not always perfect
             string sNoEndingBlankLines = string.Empty;
             using (var fs = File.OpenRead(filePath))
@@ -311,7 +307,7 @@ namespace DevTreks.Data.Helpers
                             }
                             else
                             {
-                                yield return sNoEndingBlankLines;
+                                allLines.Add(sNoEndingBlankLines);
                             }
                         }
                         else
@@ -325,7 +321,7 @@ namespace DevTreks.Data.Helpers
                                 }
                                 else
                                 {
-                                    yield return sNoEndingBlankLines;
+                                    allLines.Add(sNoEndingBlankLines);
                                 }
                             }
                             i++;
@@ -333,7 +329,61 @@ namespace DevTreks.Data.Helpers
                     }
                 }
             }
+            return allLines;
         }
+        //public async Task<List<string>> ReadLinesAsync(string filePath, int rowIndex = -1)
+        //{
+        //    List<string> allLines = new List<string>();
+        //    var lines = ReadAllLines(filePath, rowIndex);
+        // await foreach (var line in lines)
+        //    {
+        //        allLines.Add(line);
+        //    }
+        //    return allLines;
+        //}
+        //private static async IAsyncEnumerable<string> ReadAllLines(string filePath, int rowIndex)
+        //{
+        //    //conversion from excel to text is not always perfect
+        //    string sNoEndingBlankLines = string.Empty;
+        //    using (var fs = File.OpenRead(filePath))
+        //    {
+        //        using (var sr = new StreamReader(fs))
+        //        {
+        //            int i = 0;
+        //            while (true)
+        //            {
+        //                if (rowIndex == -1)
+        //                {
+        //                    sNoEndingBlankLines = await sr.ReadLineAsync();
+        //                    if (string.IsNullOrEmpty(sNoEndingBlankLines))
+        //                    {
+        //                        break;
+        //                    }
+        //                    else
+        //                    {
+        //                        yield return sNoEndingBlankLines;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    if (rowIndex == i)
+        //                    {
+        //                        sNoEndingBlankLines = await sr.ReadLineAsync();
+        //                        if (string.IsNullOrEmpty(sNoEndingBlankLines))
+        //                        {
+        //                            break;
+        //                        }
+        //                        else
+        //                        {
+        //                            yield return sNoEndingBlankLines;
+        //                        }
+        //                    }
+        //                    i++;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
         //2.2.0 deprecated
         //public async Task<List<string>> ReadLinesAsync(string filePath, int rowIndex = -1)
         //{

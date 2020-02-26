@@ -990,19 +990,15 @@ namespace DevTreks.Data.Helpers
             }
             return bHasSaved;
         }
-        //2.20 upgraded to uniform c#8 syntax
+        //2.20 had to go back to c#7.3 because of ef 3.1+
         public async Task<List<string>> ReadLinesAsync(string blobURIPath, int rowIndex = -1)
         {
-            List<string> allLines = new List<string>();
-            var lines = ReadAllLines(blobURIPath, rowIndex);
-            await foreach (var line in lines)
-            {
-                allLines.Add(line);
-            }
-            return allLines;
+            var lines = await ReadAllLines(blobURIPath, rowIndex);
+            return lines;
         }
-        public async IAsyncEnumerable<string> ReadAllLines(string blobURIPath, int rowIndex)
+        public async Task<List<string>> ReadAllLines(string blobURIPath, int rowIndex)
         {
+            List<string> allLines = new List<string>();
             if (!string.IsNullOrEmpty(blobURIPath))
             {
                 CloudBlockBlob blob = await GetBlobAsync(blobURIPath);
@@ -1026,7 +1022,7 @@ namespace DevTreks.Data.Helpers
                                     }
                                     else
                                     {
-                                        yield return sNoEndingBlankLines;
+                                        allLines.Add(sNoEndingBlankLines);
                                     }
                                 }
                                 else
@@ -1040,7 +1036,7 @@ namespace DevTreks.Data.Helpers
                                         }
                                         else
                                         {
-                                            yield return sNoEndingBlankLines;
+                                            allLines.Add(sNoEndingBlankLines);
                                         }
                                     }
                                     i++;
@@ -1050,7 +1046,69 @@ namespace DevTreks.Data.Helpers
                     }
                 }
             }
+            return allLines;
         }
+        ////2.20 upgraded to uniform c#8 syntax
+        //public async Task<List<string>> ReadLinesAsync(string blobURIPath, int rowIndex = -1)
+        //{
+        //    List<string> allLines = new List<string>();
+        //    var lines = ReadAllLines(blobURIPath, rowIndex);
+        //    await foreach (var line in lines)
+        //    {
+        //        allLines.Add(line);
+        //    }
+        //    return allLines;
+        //}
+        //public async IAsyncEnumerable<string> ReadAllLines(string blobURIPath, int rowIndex)
+        //{
+        //    if (!string.IsNullOrEmpty(blobURIPath))
+        //    {
+        //        CloudBlockBlob blob = await GetBlobAsync(blobURIPath);
+        //        if (blob != null)
+        //        {
+        //            //conversion from excel to text is not always perfect
+        //            string sNoEndingBlankLines = string.Empty;
+        //            using (Stream stream = await blob.OpenReadAsync())
+        //            {
+        //                using (var sr = new StreamReader(stream))
+        //                {
+        //                    int i = 0;
+        //                    while (true)
+        //                    {
+        //                        if (rowIndex == -1)
+        //                        {
+        //                            sNoEndingBlankLines = await sr.ReadLineAsync();
+        //                            if (string.IsNullOrEmpty(sNoEndingBlankLines))
+        //                            {
+        //                                break;
+        //                            }
+        //                            else
+        //                            {
+        //                                yield return sNoEndingBlankLines;
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            if (rowIndex == i)
+        //                            {
+        //                                sNoEndingBlankLines = await sr.ReadLineAsync();
+        //                                if (string.IsNullOrEmpty(sNoEndingBlankLines))
+        //                                {
+        //                                    break;
+        //                                }
+        //                                else
+        //                                {
+        //                                    yield return sNoEndingBlankLines;
+        //                                }
+        //                            }
+        //                            i++;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
         //2.2.0 deprecated
         ////214 optional rowindex added (i.e. columnnames only)
         //public async Task<List<string>> ReadLinesAsync(string blobURIPath, int rowIndex = -1)

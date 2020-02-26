@@ -85,19 +85,15 @@ namespace DevTreks.Data.Helpers
             }
             return lines;
         }
-        //2.20 upgraded to uniform c#8 syntax
-        public async Task<List<string>> ReadLinesAsync(string dataURL, int rowIndex = -1)
+        //2.20 had to go back to c#7.3 because of ef 3.1+
+        public async Task<List<string>> ReadLinesAsync(string filePath, int rowIndex = -1)
+        {
+            var lines = await ReadAllLines(filePath, rowIndex);
+            return lines;
+        }
+        public async Task<List<string>> ReadAllLines(string dataURL, int rowIndex)
         {
             List<string> allLines = new List<string>();
-            var lines = ReadAllLines(dataURL, rowIndex);
-            await foreach (var line in lines)
-            {
-                allLines.Add(line);
-            }
-            return allLines;
-        }
-        public async IAsyncEnumerable<string> ReadAllLines(string dataURL, int rowIndex)
-        {
             if (!string.IsNullOrEmpty(dataURL))
             {
                 using (HttpClient client = new HttpClient())
@@ -121,7 +117,7 @@ namespace DevTreks.Data.Helpers
                                     }
                                     else
                                     {
-                                        yield return sNoEndingBlankLines;
+                                        allLines.Add(sNoEndingBlankLines);
                                     }
                                 }
                                 else
@@ -135,7 +131,7 @@ namespace DevTreks.Data.Helpers
                                         }
                                         else
                                         {
-                                            yield return sNoEndingBlankLines;
+                                            allLines.Add(sNoEndingBlankLines);
                                         }
                                     }
                                     i++;
@@ -145,7 +141,70 @@ namespace DevTreks.Data.Helpers
                     }
                 }
             }
+            return allLines;
         }
+        
+        ////2.20 upgraded to uniform c#8 syntax
+        //public async Task<List<string>> ReadLinesAsync(string dataURL, int rowIndex = -1)
+        //{
+        //    List<string> allLines = new List<string>();
+        //    var lines = ReadAllLines(dataURL, rowIndex);
+        //    await foreach (var line in lines)
+        //    {
+        //        allLines.Add(line);
+        //    }
+        //    return allLines;
+        //}
+        //public async IAsyncEnumerable<string> ReadAllLines(string dataURL, int rowIndex)
+        //{
+        //    if (!string.IsNullOrEmpty(dataURL))
+        //    {
+        //        using (HttpClient client = new HttpClient())
+        //        {
+        //            var response = await client.GetStreamAsync(dataURL).ConfigureAwait(false);
+        //            if (response != null)
+        //            {
+        //                string sNoEndingBlankLines = string.Empty;
+        //                using (StreamReader sr =
+        //                   new StreamReader(response, Encoding.UTF8))
+        //                {
+        //                    int i = 0;
+        //                    while (true)
+        //                    {
+        //                        if (rowIndex == -1)
+        //                        {
+        //                            sNoEndingBlankLines = await sr.ReadLineAsync();
+        //                            if (string.IsNullOrEmpty(sNoEndingBlankLines))
+        //                            {
+        //                                break;
+        //                            }
+        //                            else
+        //                            {
+        //                                yield return sNoEndingBlankLines;
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            if (rowIndex == i)
+        //                            {
+        //                                sNoEndingBlankLines = await sr.ReadLineAsync();
+        //                                if (string.IsNullOrEmpty(sNoEndingBlankLines))
+        //                                {
+        //                                    break;
+        //                                }
+        //                                else
+        //                                {
+        //                                    yield return sNoEndingBlankLines;
+        //                                }
+        //                            }
+        //                            i++;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
         //2.2.0 deprecated
         //public async Task<List<string>> ReadLinesAsync(string dataURL, int rowIndex = -1)
         //{

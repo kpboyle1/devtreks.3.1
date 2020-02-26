@@ -13,7 +13,7 @@ namespace DevTreks.Extensions
     /// <summary>
     ///Purpose:		Add monitoring and evaluation indicators to DevTreks input, 
     ///             output, operation/component, outcome, and budget elements. 
-    ///Date:		2019, November
+    ///Date:		2020, February
     ///References:	Monitoring and Evaluation Tutorials
     ///NOTES:       Version 2.0.4 upgraded to similar properties and methods as 
     ///             the ResourceStockCalculator to promote consistency in the use 
@@ -26,6 +26,7 @@ namespace DevTreks.Extensions
     ///             Version 2.1.4 added machine learning algo and simplified calc patterns
     ///             2.1.6 supported legacy calc pattern as a new joint calc pattern
     ///             2.2.0 upgraded to uniform netcore3.0 getdatalines pattern
+    ///             and added subalgo20 and 21
     /// </summary>   
     public class ME2Indicator : CostBenefitCalculator
     {
@@ -1429,7 +1430,7 @@ namespace DevTreks.Extensions
                || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
             {
                 //version 2.2.0 stores subalgo 19 or 20 budget in first url 
-                //and optional subalgo16 budget in 2nd (but this code doesn't require the 2nd)
+                //and optional subalgo16 or 21 budget in 2nd (but this code doesn't require the 2nd)
                 string sDataURL1 = string.Empty;
                 string sDataURL2 = string.Empty;
                 string[] dataURLs = ME2Indicators[indicatorIndex].IndURL.Split(Constants.STRING_DELIMITERS);
@@ -1441,14 +1442,22 @@ namespace DevTreks.Extensions
                     if (i == 0)
                     {
                         sDataURL1 = dataURLs[i];
-                        //1st dataset uses subalgo 19 or 29
+                        //1st dataset uses subalgo 19 or 20
                         sAlgo = await ProcessAlgosAsync4(indicatorIndex, sDataURL1);
                     }
                     else if (i == 1)
                     {
                         sDataURL2 = dataURLs[i];
-                        //2nd dataset uses budget subalgo
-                        string sOldSubMathType = SetSubAlgorithm(indicatorIndex, MATH_SUBTYPES.subalgorithm16.ToString());
+                        //2nd dataset uses budget subalgos
+                        string sOldSubMathType = string.Empty;
+                        if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                        {
+                            sOldSubMathType = SetSubAlgorithm(indicatorIndex, MATH_SUBTYPES.subalgorithm16.ToString());
+                        }
+                        else if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
+                        {
+                            sOldSubMathType = SetSubAlgorithm(indicatorIndex, MATH_SUBTYPES.subalgorithm21.ToString());
+                        }
                         sAlgo = await ProcessAlgosAsync4(indicatorIndex, sDataURL2);
                         //reset both original math urls
                         SetMathResultURL(indicatorIndex, -1, sMathResults);

@@ -12,8 +12,8 @@ namespace DevTreks.Extensions.Algorithms
     /// <summary>
     ///Purpose:		DRR2 algorithm
     ///Author:		www.devtreks.org
-    ///Date:		2019, March
-    ///References:	CTA algo1, CTAP subalgo 9, 10, 11, 12, RCA subalgo 13, 14, 15, 16, 17, 18, 19
+    ///Date:		2020, Feb
+    ///References:	CTA algo1, CTAP subalgo 9, 10, 11, 12, RCA subalgo 13, 14, 15, 16, 17, 18, 19, 20, 21
     ///</summary>
     public class DRR2 : DRR1
     {
@@ -119,7 +119,9 @@ namespace DevTreks.Extensions.Algorithms
                     || _subalgorithm == MATH_SUBTYPES.subalgorithm15.ToString()
                     || _subalgorithm == MATH_SUBTYPES.subalgorithm16.ToString()
                     || _subalgorithm == MATH_SUBTYPES.subalgorithm18.ToString()
-                    || _subalgorithm == MATH_SUBTYPES.subalgorithm19.ToString())
+                    || _subalgorithm == MATH_SUBTYPES.subalgorithm19.ToString()
+                    || _subalgorithm == MATH_SUBTYPES.subalgorithm20.ToString()
+                    || _subalgorithm == MATH_SUBTYPES.subalgorithm21.ToString())
                 {
                     //4 level indicator systems
                     bHasCalculations = await Calculate4LevelIndicators(data, rowNames);
@@ -223,7 +225,9 @@ namespace DevTreks.Extensions.Algorithms
                                 || _subalgorithm == MATH_SUBTYPES.subalgorithm16.ToString()
                                 || _subalgorithm == MATH_SUBTYPES.subalgorithm17.ToString()
                                 || _subalgorithm == MATH_SUBTYPES.subalgorithm18.ToString()
-                                || _subalgorithm == MATH_SUBTYPES.subalgorithm19.ToString())
+                                || _subalgorithm == MATH_SUBTYPES.subalgorithm19.ToString()
+                                || _subalgorithm == MATH_SUBTYPES.subalgorithm20.ToString()
+                                || _subalgorithm == MATH_SUBTYPES.subalgorithm21.ToString())
                             {
                                 //resiliency indexes or mcas in scores, no weighted avg
                                 SetTRDataResult(r, iColCount, ThirdIndicator, LocationIndicator);
@@ -4942,7 +4946,8 @@ namespace DevTreks.Extensions.Algorithms
             IndicatorQT1 tr = new IndicatorQT1();
             double dbLocCount = 1;
             bool bHasTotals = false;
-            if (_subalgorithm == MATH_SUBTYPES.subalgorithm16.ToString())
+            if (_subalgorithm == MATH_SUBTYPES.subalgorithm16.ToString()
+                || _subalgorithm == MATH_SUBTYPES.subalgorithm21.ToString())
             {
                 //210 rule for cea vs cumulative sums (locational sum performance indicator, q3, and certainty, qt)
                 if (thirdIndicator.IndicatorQT1s[0].Q3 != 0 && thirdIndicator.IndicatorQT1s[0].QT != 0)

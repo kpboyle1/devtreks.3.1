@@ -9,8 +9,8 @@ namespace DevTreks.Extensions
     ///<summary>
     ///Purpose:		General rules for calculators.
     ///Author:		www.devtreks.org
-    ///Date:		2017, May
-    ///References:	www.devtreks.org/helptreks/linkedviews/help/linkedview/HelpFile/148
+    ///Date:		2020, February
+    ///References:	220: SDG Plan reference added mcda to growth series types
     /// </summary>
     public static class GeneralRules
     {
@@ -33,7 +33,9 @@ namespace DevTreks.Extensions
             exponential     = 8,
             logarithmic     = 9,
             eaa             = 10,
-            caprecoveryspv  = 11
+            caprecoveryspv  = 11,
+            //new for 220
+            mcda            = 12
         }
         public enum DISCOUNT_TYPES
         {
@@ -183,6 +185,10 @@ namespace DevTreks.Extensions
             else if (growthType == GROWTH_SERIES_TYPES.caprecoveryspv.ToString())
             {
                 eGrowthType = GROWTH_SERIES_TYPES.caprecoveryspv;
+            }
+            else if (growthType == GROWTH_SERIES_TYPES.mcda.ToString())
+            {
+                eGrowthType = GROWTH_SERIES_TYPES.mcda;
             }
             return eGrowthType;
         }
@@ -2518,6 +2524,10 @@ namespace DevTreks.Extensions
             else if (growthType == GROWTH_SERIES_TYPES.eaa)
             {
                 dbAdjustedTotal = CalculateEquivalentAnnualAnnuity(cashValue, discountYears, interestRate, 0);
+            }
+            else if (growthType == GROWTH_SERIES_TYPES.mcda)
+            {
+               //normalize all Goal Indicators
             }
             else
             {
