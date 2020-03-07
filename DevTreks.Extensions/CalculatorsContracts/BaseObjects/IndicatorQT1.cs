@@ -8,10 +8,14 @@ namespace DevTreks.Extensions
     ///             The algorithm results are passed back to SB1Base-based objects, 
     ///             who then fill in the original SB1Base with the results. 
     ///Author:		www.devtreks.org
-    ///Date:		2018, May
+    ///Date:		2020, March
     ///NOTES        1. Most data manipulation takes place using the collection property.
     ///             2. By convention, the first member of a this collection is the Score, and the 
     ///             remaining are the indexed Indicators.
+    ///             v220 increased indicator props to 30 so that TEXT files 
+    ///             could have a 1 to 1 relation to TEXT factor props 
+    ///             as a reasonable substitute for formal property names
+    ///             factor1 = IndicatorQT.Q1; factor30 = IndicatorQT.Q30
     /// </summary>
     public class IndicatorQT1 : Calculator1
     {
@@ -93,6 +97,44 @@ namespace DevTreks.Extensions
         public string Q10Unit { get; set; }
         public double Q11 { get; set; }
         public string Q11Unit { get; set; }
+        public double Q12 { get; set; }
+        public string Q12Unit { get; set; }
+        public double Q13 { get; set; }
+        public string Q13Unit { get; set; }
+        public double Q14 { get; set; }
+        public string Q14Unit { get; set; }
+        public double Q15 { get; set; }
+        public string Q15Unit { get; set; }
+        public double Q16 { get; set; }
+        public string Q16Unit { get; set; }
+        public double Q17 { get; set; }
+        public string Q17Unit { get; set; }
+        public double Q18 { get; set; }
+        public string Q18Unit { get; set; }
+        public double Q19 { get; set; }
+        public string Q19Unit { get; set; }
+        public double Q20 { get; set; }
+        public string Q20Unit { get; set; }
+        public double Q21 { get; set; }
+        public string Q21Unit { get; set; }
+        public double Q22 { get; set; }
+        public string Q22Unit { get; set; }
+        public double Q23 { get; set; }
+        public string Q23Unit { get; set; }
+        public double Q24 { get; set; }
+        public string Q24Unit { get; set; }
+        public double Q25 { get; set; }
+        public string Q25Unit { get; set; }
+        public double Q26 { get; set; }
+        public string Q26Unit { get; set; }
+        public double Q27 { get; set; }
+        public string Q27Unit { get; set; }
+        public double Q28 { get; set; }
+        public string Q28Unit { get; set; }
+        public double Q29 { get; set; }
+        public string Q29Unit { get; set; }
+        public double Q30 { get; set; }
+        public string Q30Unit { get; set; }
         public double QTM { get; set; }
         public double QTL { get; set; }
         public double QTU { get; set; }
@@ -152,6 +194,44 @@ namespace DevTreks.Extensions
             indQ.Q10Unit = string.Empty;
             indQ.Q11 = 0;
             indQ.Q11Unit = string.Empty;
+            indQ.Q12 = 0;
+            indQ.Q12Unit = string.Empty;
+            indQ.Q13 = 0;
+            indQ.Q13Unit = string.Empty;
+            indQ.Q14 = 0;
+            indQ.Q14Unit = string.Empty;
+            indQ.Q15 = 0;
+            indQ.Q15Unit = string.Empty;
+            indQ.Q16 = 0;
+            indQ.Q16Unit = string.Empty;
+            indQ.Q17 = 0;
+            indQ.Q17Unit = string.Empty;
+            indQ.Q18 = 0;
+            indQ.Q18Unit = string.Empty;
+            indQ.Q19 = 0;
+            indQ.Q19Unit = string.Empty;
+            indQ.Q20 = 0;
+            indQ.Q20Unit = string.Empty;
+            indQ.Q21 = 0;
+            indQ.Q21Unit = string.Empty;
+            indQ.Q22 = 0;
+            indQ.Q22Unit = string.Empty;
+            indQ.Q23 = 0;
+            indQ.Q23Unit = string.Empty;
+            indQ.Q24 = 0;
+            indQ.Q24Unit = string.Empty;
+            indQ.Q25 = 0;
+            indQ.Q25Unit = string.Empty;
+            indQ.Q26 = 0;
+            indQ.Q26Unit = string.Empty;
+            indQ.Q27 = 0;
+            indQ.Q27Unit = string.Empty;
+            indQ.Q28 = 0;
+            indQ.Q28Unit = string.Empty;
+            indQ.Q29 = 0;
+            indQ.Q29Unit = string.Empty;
+            indQ.Q30 = 0;
+            indQ.Q30Unit = string.Empty;
             indQ.QTM = 0;
             indQ.QTL = 0;
             indQ.QTU = 0;
@@ -189,6 +269,25 @@ namespace DevTreks.Extensions
             indQ.Q9 = 0;
             indQ.Q10 = 0;
             indQ.Q11 = 0;
+            indQ.Q12 = 0;
+            indQ.Q13 = 0;
+            indQ.Q14 = 0;
+            indQ.Q15 = 0;
+            indQ.Q16 = 0;
+            indQ.Q17 = 0;
+            indQ.Q18 = 0;
+            indQ.Q19 = 0;
+            indQ.Q20 = 0;
+            indQ.Q21 = 0;
+            indQ.Q22 = 0;
+            indQ.Q23 = 0;
+            indQ.Q24 = 0;
+            indQ.Q25 = 0;
+            indQ.Q26 = 0;
+            indQ.Q27 = 0;
+            indQ.Q28 = 0;
+            indQ.Q29 = 0;
+            indQ.Q30 = 0;
             indQ.QTM = 0;
             indQ.QTL = 0;
             indQ.QTU = 0;
@@ -218,6 +317,44 @@ namespace DevTreks.Extensions
                 indQ.Q10Unit = string.Empty;
             if (indQ.Q11Unit == null)
                 indQ.Q11Unit = string.Empty;
+            if (indQ.Q12Unit == null)
+                indQ.Q12Unit = string.Empty;
+            if (indQ.Q13Unit == null)
+                indQ.Q13Unit = string.Empty;
+            if (indQ.Q14Unit == null)
+                indQ.Q14Unit = string.Empty;
+            if (indQ.Q15Unit == null)
+                indQ.Q15Unit = string.Empty;
+            if (indQ.Q16Unit == null)
+                indQ.Q16Unit = string.Empty;
+            if (indQ.Q17Unit == null)
+                indQ.Q17Unit = string.Empty;
+            if (indQ.Q18Unit == null)
+                indQ.Q18Unit = string.Empty;
+            if (indQ.Q19Unit == null)
+                indQ.Q19Unit = string.Empty;
+            if (indQ.Q20Unit == null)
+                indQ.Q20Unit = string.Empty;
+            if (indQ.Q21Unit == null)
+                indQ.Q21Unit = string.Empty;
+            if (indQ.Q22Unit == null)
+                indQ.Q22Unit = string.Empty;
+            if (indQ.Q23Unit == null)
+                indQ.Q23Unit = string.Empty;
+            if (indQ.Q24Unit == null)
+                indQ.Q24Unit = string.Empty;
+            if (indQ.Q25Unit == null)
+                indQ.Q25Unit = string.Empty;
+            if (indQ.Q26Unit == null)
+                indQ.Q26Unit = string.Empty;
+            if (indQ.Q27Unit == null)
+                indQ.Q27Unit = string.Empty;
+            if (indQ.Q28Unit == null)
+                indQ.Q28Unit = string.Empty;
+            if (indQ.Q29Unit == null)
+                indQ.Q29Unit = string.Empty;
+            if (indQ.Q30Unit == null)
+                indQ.Q30Unit = string.Empty;
             if (indQ.QTMUnit == null)
                 indQ.QTMUnit = string.Empty;
             if (indQ.QTLUnit == null)
@@ -289,6 +426,44 @@ namespace DevTreks.Extensions
             indQ.Q10Unit = calculator.Q10Unit;
             indQ.Q11 = calculator.Q11;
             indQ.Q11Unit = calculator.Q11Unit;
+            indQ.Q12 = calculator.Q12;
+            indQ.Q12Unit = calculator.Q12Unit;
+            indQ.Q13 = calculator.Q13;
+            indQ.Q13Unit = calculator.Q13Unit;
+            indQ.Q14 = calculator.Q14;
+            indQ.Q14Unit = calculator.Q14Unit;
+            indQ.Q15 = calculator.Q15;
+            indQ.Q15Unit = calculator.Q15Unit;
+            indQ.Q16 = calculator.Q16;
+            indQ.Q16Unit = calculator.Q16Unit;
+            indQ.Q17 = calculator.Q17;
+            indQ.Q17Unit = calculator.Q17Unit;
+            indQ.Q18 = calculator.Q18;
+            indQ.Q18Unit = calculator.Q18Unit;
+            indQ.Q19 = calculator.Q19;
+            indQ.Q19Unit = calculator.Q19Unit;
+            indQ.Q20 = calculator.Q20;
+            indQ.Q20Unit = calculator.Q20Unit;
+            indQ.Q21 = calculator.Q21;
+            indQ.Q21Unit = calculator.Q21Unit;
+            indQ.Q22 = calculator.Q22;
+            indQ.Q22Unit = calculator.Q22Unit;
+            indQ.Q23 = calculator.Q23;
+            indQ.Q23Unit = calculator.Q23Unit;
+            indQ.Q24 = calculator.Q24;
+            indQ.Q24Unit = calculator.Q24Unit;
+            indQ.Q25 = calculator.Q25;
+            indQ.Q25Unit = calculator.Q25Unit;
+            indQ.Q26 = calculator.Q26;
+            indQ.Q26Unit = calculator.Q26Unit;
+            indQ.Q27 = calculator.Q27;
+            indQ.Q27Unit = calculator.Q27Unit;
+            indQ.Q28 = calculator.Q28;
+            indQ.Q28Unit = calculator.Q28Unit;
+            indQ.Q29 = calculator.Q29;
+            indQ.Q29Unit = calculator.Q29Unit;
+            indQ.Q30 = calculator.Q30;
+            indQ.Q30Unit = calculator.Q30Unit;
             indQ.QTM = calculator.QTM;
             indQ.QTL = calculator.QTL;
             indQ.QTU = calculator.QTU;
@@ -308,8 +483,164 @@ namespace DevTreks.Extensions
             indQ.MathResult = calculator.MathResult;
             indQ.Indicators = calculator.Indicators;
         }
+        public static void FillIndicatorQT1Property(IndicatorQT1 indQ,
+            int propertyIndex, double propertyValue, string propertyUnit)
+        {
+            if (indQ == null)
+                indQ = new IndicatorQT1();
+            if (propertyIndex == 1)
+            {
+                indQ.Q1 = propertyValue;
+                indQ.Q1Unit = propertyUnit;
+            }
+            else if (propertyIndex == 2)
+            {
+                indQ.Q2 = propertyValue;
+                indQ.Q2Unit = propertyUnit;
+            }
+            else if (propertyIndex == 3)
+            {
+                indQ.Q3 = propertyValue;
+                indQ.Q3Unit = propertyUnit;
+            }
+            else if (propertyIndex == 4)
+            {
+                indQ.Q4 = propertyValue;
+                indQ.Q4Unit = propertyUnit;
+            }
+            else if (propertyIndex == 5)
+            {
+                indQ.Q5 = propertyValue;
+                indQ.Q5Unit = propertyUnit;
+            }
+            else if (propertyIndex == 6)
+            {
+                indQ.Q6 = propertyValue;
+                indQ.Q6Unit = propertyUnit;
+            }
+            else if (propertyIndex == 7)
+            {
+                indQ.Q7 = propertyValue;
+                indQ.Q7Unit = propertyUnit;
+            }
+            else if (propertyIndex == 8)
+            {
+                indQ.Q8 = propertyValue;
+                indQ.Q8Unit = propertyUnit;
+            }
+            else if (propertyIndex == 9)
+            {
+                indQ.Q9 = propertyValue;
+                indQ.Q9Unit = propertyUnit;
+            }
+            else if (propertyIndex == 10)
+            {
+                indQ.Q10 = propertyValue;
+                indQ.Q10Unit = propertyUnit;
+            }
+            else if (propertyIndex == 11)
+            {
+                indQ.Q11 = propertyValue;
+                indQ.Q11Unit = propertyUnit;
+            }
+            else if (propertyIndex == 12)
+            {
+                indQ.Q12 = propertyValue;
+                indQ.Q12Unit = propertyUnit;
+            }
+            else if (propertyIndex == 13)
+            {
+                indQ.Q13 = propertyValue;
+                indQ.Q13Unit = propertyUnit;
+            }
+            else if (propertyIndex == 14)
+            {
+                indQ.Q14 = propertyValue;
+                indQ.Q14Unit = propertyUnit;
+            }
+            else if (propertyIndex == 15)
+            {
+                indQ.Q15 = propertyValue;
+                indQ.Q15Unit = propertyUnit;
+            }
+            else if (propertyIndex == 16)
+            {
+                indQ.Q16 = propertyValue;
+                indQ.Q16Unit = propertyUnit;
+            }
+            else if (propertyIndex == 17)
+            {
+                indQ.Q17 = propertyValue;
+                indQ.Q17Unit = propertyUnit;
+            }
+            else if (propertyIndex == 18)
+            {
+                indQ.Q18 = propertyValue;
+                indQ.Q18Unit = propertyUnit;
+            }
+            else if (propertyIndex == 19)
+            {
+                indQ.Q19 = propertyValue;
+                indQ.Q19Unit = propertyUnit;
+            }
+            else if (propertyIndex == 20)
+            {
+                indQ.Q20 = propertyValue;
+                indQ.Q20Unit = propertyUnit;
+            }
+            else if (propertyIndex == 21)
+            {
+                indQ.Q21 = propertyValue;
+                indQ.Q21Unit = propertyUnit;
+            }
+            else if (propertyIndex == 22)
+            {
+                indQ.Q22 = propertyValue;
+                indQ.Q22Unit = propertyUnit;
+            }
+            else if (propertyIndex == 23)
+            {
+                indQ.Q23 = propertyValue;
+                indQ.Q23Unit = propertyUnit;
+            }
+            else if (propertyIndex == 24)
+            {
+                indQ.Q24 = propertyValue;
+                indQ.Q24Unit = propertyUnit;
+            }
+            else if (propertyIndex == 25)
+            {
+                indQ.Q25 = propertyValue;
+                indQ.Q25Unit = propertyUnit;
+            }
+            else if (propertyIndex == 26)
+            {
+                indQ.Q26 = propertyValue;
+                indQ.Q26Unit = propertyUnit;
+            }
+            else if (propertyIndex == 27)
+            {
+                indQ.Q27 = propertyValue;
+                indQ.Q27Unit = propertyUnit;
+            }
+            else if (propertyIndex == 28)
+            {
+                indQ.Q28 = propertyValue;
+                indQ.Q28Unit = propertyUnit;
+            }
+            else if (propertyIndex == 29)
+            {
+                indQ.Q29 = propertyValue;
+                indQ.Q29Unit = propertyUnit;
+            }
+            else if (propertyIndex == 30)
+            {
+                indQ.Q30 = propertyValue;
+                indQ.Q30Unit = propertyUnit;
+            }
+        }
         public void CopyIndicatorQT1MathProperties(IndicatorQT1 indQ,
-            IndicatorQT1 calculator)
+        IndicatorQT1 calculator)
         {
             //do not overwrite the Q1 to Q5 props entered on ui
             //if they need updating, use CopyIndicatorQT1Properties

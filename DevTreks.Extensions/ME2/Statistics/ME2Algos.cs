@@ -153,7 +153,8 @@ namespace DevTreks.Extensions.ME2Statistics
                 || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm17)
                 || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18)
                 || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
-                || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
+                || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)
+                || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm21))
             {
                 //if its a good exceedance probability calc returns the string
                 algoindicator = await SetDRR2IndicatorStats(index, colNames, data,
@@ -3203,8 +3204,13 @@ namespace DevTreks.Extensions.ME2Statistics
             if (data.Count > 0)
             {
                 DevTreks.Extensions.Algorithms.DRR2 rmi = new Algorithms.DRR2();
-                string sLowerCI = string.Concat(Errors.GetMessage("LOWER"), this.ME2Indicators[0].IndCILevel.ToString(), Errors.GetMessage("CI_PCT"));
-                string sUpperCI = string.Concat(Errors.GetMessage("UPPER"), this.ME2Indicators[0].IndCILevel.ToString(), Errors.GetMessage("CI_PCT"));
+                string sLowerCI = string.Empty;
+                string sUpperCI = string.Empty;
+                if (this.ME2Indicators[0].IndCILevel > 0)
+                {
+                    sLowerCI = string.Concat(Errors.GetMessage("LOWER"), this.ME2Indicators[0].IndCILevel.ToString(), Errors.GetMessage("CI_PCT"));
+                    sUpperCI = string.Concat(Errors.GetMessage("UPPER"), this.ME2Indicators[0].IndCILevel.ToString(), Errors.GetMessage("CI_PCT"));
+                }
                 if (index == 0
                     && HasMathExpression(this.ME2Indicators[0].IndMathExpression))
                 {

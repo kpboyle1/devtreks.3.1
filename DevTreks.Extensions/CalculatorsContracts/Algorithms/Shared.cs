@@ -11,7 +11,7 @@ namespace DevTreks.Extensions.Algorithms
     /// <summary>
     ///Purpose:		Shared static functions that support algos
     ///Author:		www.devtreks.org
-    ///Date:		2018, May
+    ///Date:		2020, March
     ///References:	Stock, M&E, CTA, and Social Performance tutorials
     ///</summary>
     public static class Shared
@@ -1236,15 +1236,15 @@ namespace DevTreks.Extensions.Algorithms
             }
             return normTrends2;
         }
+        //220: subalgo21 uses salvalue
         public static double GetDiscountedTotal(string discountType,
             double price, double quantity,
             double life, double realRate, double nominalRate,
             double escalationRate, double times, double planningYear,
-            double serviceYears, double yearFromBase)
+            double serviceYears, double yearFromBase, double salvValue)
         {
             double dbDiscTotal = price * quantity;
             GeneralRules.GROWTH_SERIES_TYPES eGrowthType = GeneralRules.GetGrowthType(discountType);
-            double dbSalvVal = 0;
             if (realRate > 0)
                 realRate = realRate / 100;
             if (nominalRate > 0)
@@ -1252,7 +1252,7 @@ namespace DevTreks.Extensions.Algorithms
             dbDiscTotal = GeneralRules.GetGradientRealDiscountValue(dbDiscTotal,
                 realRate, serviceYears, yearFromBase,
                 planningYear, eGrowthType, escalationRate,
-                escalationRate, life, times, dbSalvVal);
+                escalationRate, life, times, salvValue);
             return dbDiscTotal;
         }
         public static double GetDiscountedAmount(double initialAmount, double life, double rate)

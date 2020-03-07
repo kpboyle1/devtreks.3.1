@@ -13,7 +13,7 @@ namespace DevTreks.Extensions
     /// <summary>
     ///Purpose:		Add monitoring and evaluation indicators to DevTreks input, 
     ///             output, operation/component, outcome, and budget elements. 
-    ///Date:		2020, February
+    ///Date:		2020, March
     ///References:	Monitoring and Evaluation Tutorials
     ///NOTES:       Version 2.0.4 upgraded to similar properties and methods as 
     ///             the ResourceStockCalculator to promote consistency in the use 
@@ -25,8 +25,7 @@ namespace DevTreks.Extensions
     ///             less emphasis on Score.DataURL
     ///             Version 2.1.4 added machine learning algo and simplified calc patterns
     ///             2.1.6 supported legacy calc pattern as a new joint calc pattern
-    ///             2.2.0 upgraded to uniform netcore3.0 getdatalines pattern
-    ///             and added subalgo20 and 21
+    ///             2.2.0 upgraded to new dependencies and and added subalgo20 and 21
     /// </summary>   
     public class ME2Indicator : CostBenefitCalculator
     {
@@ -1402,6 +1401,7 @@ namespace DevTreks.Extensions
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm14)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm16)
+                || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm21)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm17)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18))
             {
