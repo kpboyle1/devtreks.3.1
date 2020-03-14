@@ -3219,9 +3219,10 @@ namespace DevTreks.Extensions.ME2Statistics
                     //this must to use a zero index
                     rmi = InitDRR2Algo(0, index, colNames, qt1, this.ME2Indicators[0].IndMathExpression, this.ME2Indicators[0].IndMathSubType,
                         this.ME2Indicators[0].IndCILevel, this.ME2Indicators[0].IndIterations, this.ME2Indicators[0].IndRandom, this.Observations);
-                    if (this.ME2Indicators[0].IndMathSubType == MATH_SUBTYPES.subalgorithm15.ToString())
+                    if (this.ME2Indicators[0].IndMathSubType == MATH_SUBTYPES.subalgorithm15.ToString()
+                        || this.ME2Indicators[0].IndMathSubType == MATH_SUBTYPES.subalgorithm20.ToString())
                     {
-                        //212 hotspots
+                        //212 and 220 hotspots
                         rmi.CopyData(this.Data3ToAnalyze);
                     }
                     await rmi.RunAlgorithmAsync2(data, colData, lines2);

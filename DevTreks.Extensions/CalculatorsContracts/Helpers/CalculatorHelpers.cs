@@ -19,7 +19,7 @@ namespace DevTreks.Extensions
     /// <summary>
     ///Purpose:		Helper utilities used by the DoStepsAddInView's extension calculators.
     ///Author:		www.devtreks.org
-    ///Date:		2019, October
+    ///Date:		2020, March
     ///References:	
     ///NOTES:
     ///             1. This class is an extension's only communication link 
@@ -186,7 +186,11 @@ namespace DevTreks.Extensions
                 //has to be after qtext
                 eNormType = NORMALIZATION_TYPES.text;
             }
-            
+            else if (normType.ToLower().Contains(NORMALIZATION_TYPES.modzscore.ToString()))
+            {
+                //has to be after qtext
+                eNormType = NORMALIZATION_TYPES.modzscore;
+            }
             return eNormType;
         }
             #region "set linked lists state"

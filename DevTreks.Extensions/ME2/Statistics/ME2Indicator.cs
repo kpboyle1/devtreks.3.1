@@ -1407,7 +1407,7 @@ namespace DevTreks.Extensions
             {
                 //212 Score analysis
                 if (indicatorIndex == 0
-                    && HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15))
+                    && (HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)))
                 {
                     List<List<string>> colData = IndicatorQT1.GetDefaultData();
                     iAlgo = await SetAlgoStats4(indicatorIndex, colData, colData, new List<string>());
@@ -1429,40 +1429,50 @@ namespace DevTreks.Extensions
             else if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
                || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
             {
-                //version 2.2.0 stores subalgo 19 or 20 budget in first url 
-                //and optional subalgo16 or 21 budget in 2nd (but this code doesn't require the 2nd)
-                string sDataURL1 = string.Empty;
-                string sDataURL2 = string.Empty;
-                string[] dataURLs = ME2Indicators[indicatorIndex].IndURL.Split(Constants.STRING_DELIMITERS);
-                string sMathResults = ME2Indicators[indicatorIndex].IndMathResult;
-                for (int i = 0; i < dataURLs.Count(); i++)
+                //220 Score analysis
+                if (indicatorIndex == 0
+                    && (HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)))
                 {
-                    //220: mathresults hold 2 urls
-                    SetMathResultURL(indicatorIndex, i, sMathResults);
-                    if (i == 0)
+                    List<List<string>> colData = IndicatorQT1.GetDefaultData();
+                    iAlgo = await SetAlgoStats4(indicatorIndex, colData, colData, new List<string>());
+                }
+                else
+                {
+                    //version 2.2.0 stores subalgo 19 or 20 budget in first url 
+                    //and optional subalgo16 or 21 budget in 2nd (but this code doesn't require the 2nd)
+                    string sDataURL1 = string.Empty;
+                    string sDataURL2 = string.Empty;
+                    string[] dataURLs = ME2Indicators[indicatorIndex].IndURL.Split(Constants.STRING_DELIMITERS);
+                    string sMathResults = ME2Indicators[indicatorIndex].IndMathResult;
+                    for (int i = 0; i < dataURLs.Count(); i++)
                     {
-                        sDataURL1 = dataURLs[i];
-                        //1st dataset uses subalgo 19 or 20
-                        sAlgo = await ProcessAlgosAsync4(indicatorIndex, sDataURL1);
-                    }
-                    else if (i == 1)
-                    {
-                        sDataURL2 = dataURLs[i];
-                        //2nd dataset uses budget subalgos
-                        string sOldSubMathType = string.Empty;
-                        if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                        //220: mathresults can hold 2 urls
+                        SetMathResultURL(indicatorIndex, i, sMathResults);
+                        if (i == 0)
                         {
-                            sOldSubMathType = SetSubAlgorithm(indicatorIndex, MATH_SUBTYPES.subalgorithm16.ToString());
+                            sDataURL1 = dataURLs[i];
+                            //1st dataset uses subalgo 19 or 20
+                            sAlgo = await ProcessAlgosAsync4(indicatorIndex, sDataURL1);
                         }
-                        else if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
+                        else if (i == 1)
                         {
-                            sOldSubMathType = SetSubAlgorithm(indicatorIndex, MATH_SUBTYPES.subalgorithm21.ToString());
+                            sDataURL2 = dataURLs[i];
+                            //2nd dataset uses budget subalgos
+                            string sOldSubMathType = string.Empty;
+                            if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                            {
+                                sOldSubMathType = SetSubAlgorithm(indicatorIndex, MATH_SUBTYPES.subalgorithm16.ToString());
+                            }
+                            else if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
+                            {
+                                sOldSubMathType = SetSubAlgorithm(indicatorIndex, MATH_SUBTYPES.subalgorithm21.ToString());
+                            }
+                            sAlgo = await ProcessAlgosAsync4(indicatorIndex, sDataURL2);
+                            //reset both original math urls
+                            SetMathResultURL(indicatorIndex, -1, sMathResults);
+                            //reset subalgo
+                            sOldSubMathType = SetSubAlgorithm(indicatorIndex, sOldSubMathType);
                         }
-                        sAlgo = await ProcessAlgosAsync4(indicatorIndex, sDataURL2);
-                        //reset both original math urls
-                        SetMathResultURL(indicatorIndex, -1, sMathResults);
-                        //reset subalgo
-                        sOldSubMathType = SetSubAlgorithm(indicatorIndex, sOldSubMathType);
                     }
                 }
             }
@@ -7979,7 +7989,8 @@ namespace DevTreks.Extensions
             //init the algos using this
             ME2Statistics.ME2Algos algos = new ME2Statistics.ME2Algos(this);
             //212 persistent data has to be copied separately
-            if (HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15))
+            if (HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
+                || HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
             {
                 algos.CopyData(this.Data3ToAnalyze);
             }
@@ -7987,7 +7998,8 @@ namespace DevTreks.Extensions
                 = await algos.SetAlgoIndicatorStats4(index, data, colData, lines2, _colNames);
             //copy all of the results back to this
             CopyME2IndicatorsProperties(algos);
-            if (HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15))
+            if (HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
+                || HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
             {
                 this.CopyData(algos.Data3ToAnalyze);
             }

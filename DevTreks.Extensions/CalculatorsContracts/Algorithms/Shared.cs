@@ -2079,6 +2079,22 @@ namespace DevTreks.Extensions.Algorithms
             //iRowCount = (testCount < iRowCount) ? iRowCount : testCount;
             return iRowCount;
         }
+        //
+        public static double GetMathExpressionResult(string mathExpression, string label, 
+            ref string error)
+        {
+            double dbTotal = 0;
+            try
+            {
+                Jace.CalculationEngine engine = new Jace.CalculationEngine();
+                dbTotal = engine.Calculate(mathExpression);
+            }
+            catch (Exception x)
+            {
+                error = string.Concat(label, ": ", x.Message);//, CalculatorHelpers.MakeStandardErrorMsg("JACE_BASIC"));
+            }
+            return dbTotal;
+        }
     }
 
 }
