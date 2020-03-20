@@ -641,6 +641,192 @@ namespace DevTreks.Extensions
                 indQ.Q30Unit = propertyUnit;
             }
         }
+        public static void FillDatasetWithQT1Property(List<List<string>> ds, 
+            int rowCount, int colCount, IndicatorQT1 indQ, int propertyIndex)
+        {
+            if (indQ == null)
+                indQ = new IndicatorQT1();
+            if (propertyIndex == 1)
+            {
+                ds[rowCount][colCount] = 
+                    (string.IsNullOrEmpty(indQ.Q1Unit) || (indQ.Q1Unit == Constants.NONE)) 
+                    ? indQ.Q1.ToString() : indQ.Q1Unit;
+            }
+            else if (propertyIndex == 2)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q2Unit) || (indQ.Q2Unit == Constants.NONE))
+                   ? indQ.Q2.ToString() : indQ.Q2Unit;
+            }
+            else if (propertyIndex == 3)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q3Unit) || (indQ.Q3Unit == Constants.NONE))
+                   ? indQ.Q3.ToString() : indQ.Q3Unit;
+            }
+            else if (propertyIndex == 4)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q4Unit) || (indQ.Q4Unit == Constants.NONE))
+                   ? indQ.Q4.ToString() : indQ.Q4Unit;
+            }
+            else if (propertyIndex == 5)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q5Unit) || (indQ.Q5Unit == Constants.NONE))
+                   ? indQ.Q5.ToString() : indQ.Q5Unit;
+            }
+            else if (propertyIndex == 6)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q6Unit) || (indQ.Q6Unit == Constants.NONE))
+                   ? indQ.Q6.ToString() : indQ.Q6Unit;
+            }
+            else if (propertyIndex == 7)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q7Unit) || (indQ.Q7Unit == Constants.NONE))
+                   ? indQ.Q7.ToString() : indQ.Q7Unit;
+            }
+            else if (propertyIndex == 8)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q8Unit) || (indQ.Q8Unit == Constants.NONE))
+                   ? indQ.Q8.ToString() : indQ.Q8Unit;
+            }
+            else if (propertyIndex == 9)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q9Unit) || (indQ.Q9Unit == Constants.NONE))
+                   ? indQ.Q9.ToString() : indQ.Q9Unit;
+            }
+            else if (propertyIndex == 10)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q10Unit) || (indQ.Q10Unit == Constants.NONE))
+                   ? indQ.Q10.ToString() : indQ.Q10Unit;
+            }
+            else if (propertyIndex == 11)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q11Unit) || (indQ.Q11Unit == Constants.NONE))
+                   ? indQ.Q11.ToString() : indQ.Q11Unit;
+            }
+            else if (propertyIndex == 12)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q12Unit) || (indQ.Q12Unit == Constants.NONE))
+                   ? indQ.Q12.ToString() : indQ.Q12Unit;
+            }
+            else if (propertyIndex == 13)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q13Unit) || (indQ.Q13Unit == Constants.NONE))
+                   ? indQ.Q13.ToString() : indQ.Q13Unit;
+            }
+            else if (propertyIndex == 14)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q14Unit) || (indQ.Q14Unit == Constants.NONE))
+                   ? indQ.Q14.ToString() : indQ.Q14Unit;
+            }
+            else if (propertyIndex == 15)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q15Unit) || (indQ.Q15Unit == Constants.NONE))
+                   ? indQ.Q15.ToString() : indQ.Q15Unit;
+            }
+            else if (propertyIndex == 16)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q16Unit) || (indQ.Q16Unit == Constants.NONE))
+                   ? indQ.Q16.ToString() : indQ.Q16Unit;
+            }
+            else if (propertyIndex == 17)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q17Unit) || (indQ.Q17Unit == Constants.NONE))
+                   ? indQ.Q17.ToString() : indQ.Q17Unit;
+            }
+            else if (propertyIndex == 18)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q18Unit) || (indQ.Q18Unit == Constants.NONE))
+                   ? indQ.Q18.ToString() : indQ.Q18Unit;
+            }
+            else if (propertyIndex == 19)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q19Unit) || (indQ.Q19Unit == Constants.NONE))
+                   ? indQ.Q19.ToString() : indQ.Q19Unit;
+            }
+            else if (propertyIndex == 20)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q20Unit) || (indQ.Q20Unit == Constants.NONE))
+                   ? indQ.Q20.ToString() : indQ.Q20Unit;
+            }
+            else if (propertyIndex == 21)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q21Unit) || (indQ.Q21Unit == Constants.NONE))
+                   ? indQ.Q21.ToString() : indQ.Q21Unit;
+            }
+            else if (propertyIndex == 22)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q22Unit) || (indQ.Q22Unit == Constants.NONE))
+                   ? indQ.Q22.ToString() : indQ.Q22Unit;
+            }
+            else if (propertyIndex == 23)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q23Unit) || (indQ.Q23Unit == Constants.NONE))
+                   ? indQ.Q23.ToString() : indQ.Q23Unit;
+            }
+            else if (propertyIndex == 24)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q24Unit) || (indQ.Q24Unit == Constants.NONE))
+                   ? indQ.Q24.ToString() : indQ.Q24Unit;
+            }
+            else if (propertyIndex == 25)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q25Unit) || (indQ.Q25Unit == Constants.NONE))
+                   ? indQ.Q25.ToString() : indQ.Q25Unit;
+            }
+            else if (propertyIndex == 26)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q26Unit) || (indQ.Q26Unit == Constants.NONE))
+                   ? indQ.Q26.ToString() : indQ.Q26Unit;
+            }
+            else if (propertyIndex == 27)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q27Unit) || (indQ.Q27Unit == Constants.NONE))
+                   ? indQ.Q27.ToString() : indQ.Q27Unit;
+            }
+            else if (propertyIndex == 28)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q28Unit) || (indQ.Q28Unit == Constants.NONE))
+                   ? indQ.Q28.ToString() : indQ.Q28Unit;
+            }
+            else if (propertyIndex == 29)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q29Unit) || (indQ.Q29Unit == Constants.NONE))
+                   ? indQ.Q29.ToString() : indQ.Q29Unit;
+            }
+            else if (propertyIndex == 30)
+            {
+                ds[rowCount][colCount] =
+                   (string.IsNullOrEmpty(indQ.Q30Unit) || (indQ.Q30Unit == Constants.NONE))
+                   ? indQ.Q30.ToString() : indQ.Q30Unit;
+            }
+        }
         public void CopyIndicatorQT1MathProperties(IndicatorQT1 indQ,
         IndicatorQT1 calculator)
         {
