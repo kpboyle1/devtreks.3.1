@@ -1059,8 +1059,6 @@ namespace DevTreks.Extensions
                     if (!_indicators.Any(o => o == 1))
                     {
                         sAlgo = await ProcessIndicators(indicatorIndex);
-                        //216 deprecated
-                        //bHasIndicator1 = true;
                     }
                 }
                 indicatorIndex++;
@@ -1400,6 +1398,7 @@ namespace DevTreks.Extensions
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm13)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm14)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
+                || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm16)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm21)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm17)
@@ -1407,7 +1406,8 @@ namespace DevTreks.Extensions
             {
                 //212 Score analysis
                 if (indicatorIndex == 0
-                    && (HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)))
+                    && ((HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15))
+                    || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)))
                 {
                     List<List<string>> colData = IndicatorQT1.GetDefaultData();
                     iAlgo = await SetAlgoStats4(indicatorIndex, colData, colData, new List<string>());

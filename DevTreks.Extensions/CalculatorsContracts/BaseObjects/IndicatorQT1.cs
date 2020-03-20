@@ -403,6 +403,8 @@ namespace DevTreks.Extensions
                 calculator = new IndicatorQT1();
             if (indQ == null)
                 indQ = new IndicatorQT1();
+            //220 needed further null ref check
+            InitIndicatorQT1MathProperties(indQ);
             indQ.Label = calculator.Label;
             indQ.Q1 = calculator.Q1;
             indQ.Q1Unit = calculator.Q1Unit;

@@ -11,7 +11,7 @@ namespace DevTreks.Extensions.ME2Statistics
     ///<summary>
     ///Purpose:		Run algorithms
     ///Author:		www.devtreks.org
-    ///Date:		2019, March
+    ///Date:		2020, March
     ///NOTES        These algorithm patterns derived directly from the equivalent code 
     ///             in the Resource Stock Calculator. They need to evolve to handle 
     ///             large numbers of algorithms.
@@ -1262,7 +1262,9 @@ namespace DevTreks.Extensions.ME2Statistics
                 || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm16)
                 || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm17)
                 || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18)
-                || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
+                || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)
+                || this.HasMathType(index, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm21))
             {
                 lowerci = qt1.QTLUnit;
                 upperci = qt1.QTUUnit;

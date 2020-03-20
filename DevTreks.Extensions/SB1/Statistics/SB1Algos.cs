@@ -11,7 +11,7 @@ namespace DevTreks.Extensions.SB1Statistics
     ///<summary>
     ///Purpose:		Run algorithms
     ///Author:		www.devtreks.org
-    ///Date:		2019, February
+    ///Date:		2020, March
     ///NOTES        1. 214 supported machine learning
     /// </summary> 
     public class SB1Algos : SB1Base
@@ -150,7 +150,9 @@ namespace DevTreks.Extensions.SB1Statistics
                 || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm16)
                 || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm17)
                 || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18)
-                || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
+                || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)
+                || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm21))
             {
                 //if its a good probability calc returns the string
                 algoindicator = await SetDRR2IndicatorStats(label, colNames, data,
@@ -1214,7 +1216,10 @@ namespace DevTreks.Extensions.SB1Statistics
                 || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
                 || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm16)
                 || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm17)
-                || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18))
+                || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18)
+                || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
+                || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)
+                || this.HasMathType(label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm21))
             {
                 lowerci = qt1.QTLUnit;
                 upperci = qt1.QTUUnit;
@@ -4382,7 +4387,8 @@ namespace DevTreks.Extensions.SB1Statistics
                     //this must to use a zero index
                     rmi = InitDRR2Algo(0, label, colNames, qt1, this.SB1ScoreMathExpression, this.SB1ScoreMathSubType,
                         this.SB1CILevel, this.SB1Iterations, this.SB1Random, this.Observations);
-                    if (this.SB1MathSubType1 == MATH_SUBTYPES.subalgorithm15.ToString())
+                    if (this.SB1MathSubType1 == MATH_SUBTYPES.subalgorithm15.ToString()
+                        || this.SB1MathSubType1 == MATH_SUBTYPES.subalgorithm20.ToString())
                     {
                         //212 hotspots
                         rmi.CopyData(this.Data3ToAnalyze);
