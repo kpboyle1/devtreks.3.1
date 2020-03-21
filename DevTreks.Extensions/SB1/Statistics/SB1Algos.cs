@@ -4387,10 +4387,10 @@ namespace DevTreks.Extensions.SB1Statistics
                     //this must to use a zero index
                     rmi = InitDRR2Algo(0, label, colNames, qt1, this.SB1ScoreMathExpression, this.SB1ScoreMathSubType,
                         this.SB1CILevel, this.SB1Iterations, this.SB1Random, this.Observations);
-                    if (this.SB1MathSubType1 == MATH_SUBTYPES.subalgorithm15.ToString()
-                        || this.SB1MathSubType1 == MATH_SUBTYPES.subalgorithm20.ToString())
+                    if (this.SB1ScoreMathSubType == MATH_SUBTYPES.subalgorithm15.ToString()
+                        || this.SB1ScoreMathSubType == MATH_SUBTYPES.subalgorithm20.ToString())
                     {
-                        //212 hotspots
+                        //220 hotspots
                         rmi.CopyData(this.Data3ToAnalyze);
                     }
                     await rmi.RunAlgorithmAsync2(data, colData, lines2);

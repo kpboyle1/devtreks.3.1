@@ -14121,41 +14121,30 @@ namespace DevTreks.Extensions
                 || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm12)
                 || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm13)
                 || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm14)
-                || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
-                || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)
                 || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm16)
                 || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm21)
                 || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm17)
                 || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18))
             {
-                //212 Score analysis
-                if (indicatorIndex == 0
-                    && (HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
-                    || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)))
+                if (indicatorIndex == 3
+                    && (HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm11)
+                    || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm12)))
                 {
-                    List<List<string>> colData = IndicatorQT1.GetDefaultData();
-                    sAlgo = await SetAlgoStats4(qt1.Label, colData, colData, new List<string>());
+                    sAlgo = await ProcessAlgosAsync3(indicatorIndex, indicatorURL);
                 }
                 else
                 {
-                    if (indicatorIndex == 3
-                        && (HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm11)
-                        || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm12)))
-                    {
-                        sAlgo = await ProcessAlgosAsync3(indicatorIndex, indicatorURL);
-                    }
-                    else
-                    {
-                        sAlgo = await ProcessAlgosAsync4(indicatorIndex, indicatorURL);
-                    }
+                    sAlgo = await ProcessAlgosAsync4(indicatorIndex, indicatorURL);
                 }
             }
-            else if (HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
+            else if (HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
+               || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
                || HasMathType(qt1.Label, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
             {
                 //220 Score analysis
                 if (indicatorIndex == 0
-                    && (HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)))
+                    && (HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
+                    || HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)))
                 {
                     List<List<string>> colData = IndicatorQT1.GetDefaultData();
                     sAlgo = await SetAlgoStats4(qt1.Label, colData, colData, new List<string>());
@@ -14175,7 +14164,7 @@ namespace DevTreks.Extensions
                         if (i == 0)
                         {
                             sDataURL1 = dataURLs[i];
-                            //1st dataset uses subalgo 19 or 29
+                            //1st dataset uses subalgo 15, 19, or 20
                             sAlgo = await ProcessAlgosAsync4(indicatorIndex, sDataURL1);
                         }
                         else if (i == 1)
@@ -14183,9 +14172,14 @@ namespace DevTreks.Extensions
                             sDataURL2 = dataURLs[i];
                             //2nd dataset uses budget subalgos
                             string sOldSubMathType = string.Empty;
-                            if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                            //they can actually use 16 or 21, but this lines up with the tutorial
+                            if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15))
                             {
                                 sOldSubMathType = SetSubAlgorithm(indicatorIndex, qt1, MATH_SUBTYPES.subalgorithm16.ToString());
+                            }
+                            else if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                            {
+                                sOldSubMathType = SetSubAlgorithm(indicatorIndex, qt1, MATH_SUBTYPES.subalgorithm21.ToString());
                             }
                             else if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
                             {
@@ -20936,9 +20930,9 @@ namespace DevTreks.Extensions
             string sError = string.Empty;
             //init the algos using this
             SB1Statistics.SB1Algos algos = new SB1Statistics.SB1Algos(this);
-            //212 persistent data has to be copied separately
-            if (HasMathType(this.SB1Label1, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
-                || HasMathType(this.SB1Label1, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
+            //220 persistent data has to be copied separately
+            if (HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
+                || HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
             {
                 algos.CopyData(this.Data3ToAnalyze);
             }
@@ -20946,8 +20940,8 @@ namespace DevTreks.Extensions
                 = await algos.SetAlgoIndicatorStats4(label, data, colData, lines2, _colNames);
             //copy all of the results back to this (the inheritance handles copying Data3ToAnalyze)
             this.CopySB1BaseProperties(algos);
-            if (HasMathType(this.SB1Label1, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
-                || HasMathType(this.SB1Label1, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
+            if (HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
+                || HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
             {
                 this.CopyData(algos.Data3ToAnalyze);
             }

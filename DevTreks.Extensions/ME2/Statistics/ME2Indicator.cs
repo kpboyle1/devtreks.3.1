@@ -1397,41 +1397,30 @@ namespace DevTreks.Extensions
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm12)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm13)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm14)
-                || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
-                || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm16)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm21)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm17)
                 || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm18))
             {
-                //212 Score analysis
-                if (indicatorIndex == 0
-                    && ((HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15))
-                    || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)))
+                if (indicatorIndex == 3
+                    && (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm11)
+                    || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm12)))
                 {
-                    List<List<string>> colData = IndicatorQT1.GetDefaultData();
-                    iAlgo = await SetAlgoStats4(indicatorIndex, colData, colData, new List<string>());
+                    sAlgo = await ProcessAlgosAsync3(indicatorIndex, ME2Indicators[indicatorIndex].IndURL);
                 }
                 else
                 {
-                    if (indicatorIndex == 3
-                        && (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm11)
-                        || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm12)))
-                    {
-                        sAlgo = await ProcessAlgosAsync3(indicatorIndex, ME2Indicators[indicatorIndex].IndURL);
-                    }
-                    else
-                    {
-                        sAlgo = await ProcessAlgosAsync4(indicatorIndex, ME2Indicators[indicatorIndex].IndURL);
-                    }
+                    sAlgo = await ProcessAlgosAsync4(indicatorIndex, ME2Indicators[indicatorIndex].IndURL);
                 }
             }
-            else if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
-               || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
+            else if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
+                || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19)
+                || HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
             {
                 //220 Score analysis
                 if (indicatorIndex == 0
-                    && (HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)))
+                    && (HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15)
+                    || HasMathType(0, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20)))
                 {
                     List<List<string>> colData = IndicatorQT1.GetDefaultData();
                     iAlgo = await SetAlgoStats4(indicatorIndex, colData, colData, new List<string>());
@@ -1459,9 +1448,14 @@ namespace DevTreks.Extensions
                             sDataURL2 = dataURLs[i];
                             //2nd dataset uses budget subalgos
                             string sOldSubMathType = string.Empty;
-                            if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                            //they can actually use 16 or 21, but this lines up with the tutorial
+                            if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm15))
                             {
                                 sOldSubMathType = SetSubAlgorithm(indicatorIndex, MATH_SUBTYPES.subalgorithm16.ToString());
+                            }
+                            else if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm19))
+                            {
+                                sOldSubMathType = SetSubAlgorithm(indicatorIndex, MATH_SUBTYPES.subalgorithm21.ToString());
                             }
                             else if (HasMathType(indicatorIndex, MATH_TYPES.algorithm1, MATH_SUBTYPES.subalgorithm20))
                             {
