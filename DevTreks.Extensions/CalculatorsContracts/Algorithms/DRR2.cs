@@ -566,6 +566,10 @@ namespace DevTreks.Extensions.Algorithms
             {
                 FillIndicatorDistributionForRCA6(data, rowNames, r, pra1);
             }
+            else if (_subalgorithm == MATH_SUBTYPES.subalgorithm19.ToString())
+            {
+                FillIndicatorDistributionForRCA4(data, rowNames, r, pra1);
+            }
             else
             {
                 //iterate through columns, skipping y column
@@ -1319,7 +1323,7 @@ namespace DevTreks.Extensions.Algorithms
                 }
             }
         }
-       
+        
         private void FillLocationIndicator(List<List<string>> data, List<List<string>> rowNames,
             int r, string label, string altName, int location, IndicatorQT1 locationIndicator)
         {
@@ -1345,7 +1349,7 @@ namespace DevTreks.Extensions.Algorithms
             }
             else if (_subalgorithm == MATH_SUBTYPES.subalgorithm19.ToString())
             {
-                FillLocationRCA9Indicator(data, rowNames, r, label, altName, location, locationIndicator);
+                FillLocationRCA4Indicator(data, rowNames, r, label, altName, location, locationIndicator);
             }
             else
             {
@@ -1547,26 +1551,7 @@ namespace DevTreks.Extensions.Algorithms
                 }
             }
         }
-        private void FillLocationRCA9Indicator(List<List<string>> data, List<List<string>> rowNames,
-                int r, string label, string altName, int location, IndicatorQT1 locationIndicator)
-        {
-            locationIndicator.Label = label; //"TR";
-            locationIndicator.AlternativeType = altName;
-            locationIndicator.Alternative2 = location;
-            locationIndicator.QTMUnit = "total risk";
-            for (int c = 0; c < data[r].Count; c++)
-            {
-                if (c == 0)
-                {
-                    //need label in rowNames
-                    locationIndicator.Label = rowNames[r][0];
-                }
-                else
-                {
-                    locationIndicator.Indicators[c] = data[r][c];
-                }
-            }
-        }
+        
         private void FillIndicatorQT(IndicatorQT1 scoreIndicator)
         {
             if (_subalgorithm == MATH_SUBTYPES.subalgorithm13.ToString())
@@ -2249,11 +2234,6 @@ namespace DevTreks.Extensions.Algorithms
                 }
             }
         }
-        private void FillRCA10IndicatorQT(IndicatorQT1 scoreIndicator)
-        {
-            //these subalgos store their calcs in the extra cols added to the dataresults
-            IndicatorQT.Indicators = new string[DataResults[0].Count];
-        }
         private async Task<PRA1> CalculateSubIndicators(PRA1 pra1, PRA1 catIndexPRA)
         {
             if (_subalgorithm == MATH_SUBTYPES.subalgorithm14.ToString())
@@ -2518,17 +2498,14 @@ namespace DevTreks.Extensions.Algorithms
             else if (_subalgorithm == MATH_SUBTYPES.subalgorithm19.ToString())
             {
                 //run pra if needed
-                string sDistType = pra1.IndicatorQT.Indicators[15];
+                string sDistType = pra1.IndicatorQT.Q16Unit;
                 if (!string.IsNullOrEmpty(sDistType) && sDistType != Constants.NONE)
                 {
                     pra1.IndicatorQT.QDistributionType = sDistType;
                     //actual measured flow
-                    pra1.IndicatorQT.QT = CalculatorHelpers.ConvertStringToDouble(
-                        pra1.IndicatorQT.Indicators[10]);
-                    pra1.IndicatorQT.QTD1 = CalculatorHelpers.ConvertStringToDouble(
-                        pra1.IndicatorQT.Indicators[11]);
-                    pra1.IndicatorQT.QTD2 = CalculatorHelpers.ConvertStringToDouble(
-                        pra1.IndicatorQT.Indicators[13]);
+                    pra1.IndicatorQT.QT = pra1.IndicatorQT.Q11;
+                    pra1.IndicatorQT.QTD1 = pra1.IndicatorQT.Q12;
+                    pra1.IndicatorQT.QTD2 = pra1.IndicatorQT.Q14;
                     //don't save the result in MathResultURL
                     pra1.IndicatorQT.MathResult = string.Empty;
                     //calcs qtm, qtl, and qtu
@@ -2537,24 +2514,12 @@ namespace DevTreks.Extensions.Algorithms
                 else
                 {
                     //actual measured flow that will be added to the benchmark stock when norms calcd
-                    pra1.IndicatorQT.QTM = CalculatorHelpers.ConvertStringToDouble(
-                        pra1.IndicatorQT.Indicators[10]);
-                    pra1.IndicatorQT.QTL = CalculatorHelpers.ConvertStringToDouble(
-                        pra1.IndicatorQT.Indicators[11]);
-                    pra1.IndicatorQT.QTU = CalculatorHelpers.ConvertStringToDouble(
-                        pra1.IndicatorQT.Indicators[13]);
+                    pra1.IndicatorQT.QTM = pra1.IndicatorQT.Q11;
+                    pra1.IndicatorQT.QTL = pra1.IndicatorQT.Q12;
+                    pra1.IndicatorQT.QTU = pra1.IndicatorQT.Q14;
                 }
-                //pra1.IndicatorQT.Q1, Q2, Q3 hold averages of certainties
-                pra1.IndicatorQT.Q1 = CalculatorHelpers.ConvertStringToDouble(
-                    pra1.IndicatorQT.Indicators[16]);
-                pra1.IndicatorQT.Q2 = CalculatorHelpers.ConvertStringToDouble(
-                    pra1.IndicatorQT.Indicators[17]);
-                pra1.IndicatorQT.Q3 = CalculatorHelpers.ConvertStringToDouble(
-                    pra1.IndicatorQT.Indicators[18]);
-                double dbTargetFlow = CalculatorHelpers.ConvertStringToDouble(
-                    pra1.IndicatorQT.Indicators[9]);
-                double dbTargetStock = CalculatorHelpers.ConvertStringToDouble(
-                   pra1.IndicatorQT.Indicators[8]);
+                double dbTargetFlow = pra1.IndicatorQT.Q10;
+                double dbTargetStock = pra1.IndicatorQT.Q9;
                 //assume no zero targets
                 //flow target percent = (actual flow / flow target) * 100
                 if (dbTargetFlow != 0)
@@ -2563,12 +2528,13 @@ namespace DevTreks.Extensions.Algorithms
                     //else is default 0
                 }
                 //actual ending stock for current period = (actual current flow + benchmark stock)  
-                pra1.IndicatorQT.QTM = (pra1.IndicatorQT.QTM + CalculatorHelpers.ConvertStringToDouble(
-                    pra1.IndicatorQT.Indicators[2]));
-                pra1.IndicatorQT.QTL = (pra1.IndicatorQT.QTL + CalculatorHelpers.ConvertStringToDouble(
-                    pra1.IndicatorQT.Indicators[4]));
-                pra1.IndicatorQT.QTU = (pra1.IndicatorQT.QTU + CalculatorHelpers.ConvertStringToDouble(
-                    pra1.IndicatorQT.Indicators[6]));
+                pra1.IndicatorQT.QTM = (pra1.IndicatorQT.QTM + pra1.IndicatorQT.Q3);
+                pra1.IndicatorQT.QTL = (pra1.IndicatorQT.QTL + pra1.IndicatorQT.Q5);
+                pra1.IndicatorQT.QTU = (pra1.IndicatorQT.QTU + pra1.IndicatorQT.Q7);
+                //pra1.IndicatorQT.Q1, Q2, Q3 hold averages of certainties
+                pra1.IndicatorQT.Q1 = pra1.IndicatorQT.Q17;
+                pra1.IndicatorQT.Q2 = pra1.IndicatorQT.Q18;
+                pra1.IndicatorQT.Q3 = pra1.IndicatorQT.Q19;
                 //stock target = actual stock / stock target
                 if (dbTargetStock != 0)
                 {
@@ -2672,9 +2638,16 @@ namespace DevTreks.Extensions.Algorithms
                                     //220: wyswyg adds 6 calculated cols and relates these 1 to 1 to TEXT factor cols
                                     //location indicator holds total costs and total perf score 
                                     //(displayed in factor12, 13, and 14 cols)
-                                    catpra.Key.IndicatorQT.QTM = ceaLocIndicator.QTM;
-                                    catpra.Key.IndicatorQT.QTL = ceaLocIndicator.QTL;
-                                    catpra.Key.IndicatorQT.QTU = ceaLocIndicator.QTU;
+                                    //220: this is not just the sum of the catindex ceas
+                                    //have to do separate cea for loc index w assumption that 
+                                    //catindex cea divisors were all normalized
+                                    //so neither of these 2 calcs are correct
+                                    //catpra.Key.IndicatorQT.QTM = ceaLocIndicator.QTM;
+                                    //catpra.Key.IndicatorQT.QTM = ceaLocIndicator.QTM / ceaLocIndicator.Q1;
+                                    //total cost / cea total quantity
+                                    catpra.Key.IndicatorQT.QTM = ceaLocIndicator.Q12 / ceaLocIndicator.Q1;
+                                    catpra.Key.IndicatorQT.QTL = ceaLocIndicator.Q13 / ceaLocIndicator.Q2;
+                                    catpra.Key.IndicatorQT.QTU = ceaLocIndicator.Q14 / ceaLocIndicator.Q3; ;
                                     //cea displays total costs in last 3 calculated columns (but stored in qtm, qtl, qtu place)
                                     catpra.Key.IndicatorQT.Q12 = ceaLocIndicator.Q12;
                                     catpra.Key.IndicatorQT.Q13 = ceaLocIndicator.Q13;
@@ -3109,7 +3082,7 @@ namespace DevTreks.Extensions.Algorithms
                         //indicators
                         foreach (var subpra in catpra.Value)
                         {
-                            string sNormType = subpra.IndicatorQT.Indicators[19];
+                            string sNormType = subpra.IndicatorQT.Q20Unit;
 
                             if (sNormType
                                 == CalculatorHelpers.NORMALIZATION_TYPES.modzscore.ToString())
@@ -3170,6 +3143,7 @@ namespace DevTreks.Extensions.Algorithms
             bHasCompleted = true;
             return bHasCompleted;
         }
+
         private async Task<bool> SetCategoryAndIndicatorDataResult3(
             int locationIndex, Dictionary<PRA1, List<PRA1>> locationIndexes,
             List<string> dataR, int r, IndicatorQT1 locationIndicator)
@@ -3350,42 +3324,36 @@ namespace DevTreks.Extensions.Algorithms
                         foreach (var subpra in catpra.Value)
                         {
                             //set norm params
-                            if (subpra.IndicatorQT.Indicators.Count() >= 21)
+                            sNormType = SetNormalizationType(subpra.IndicatorQT.Q20Unit, sNormType, qtNs);
+                            if (sNormType == CalculatorHelpers.NORMALIZATION_TYPES.modzscore.ToString())
                             {
-                                sNormType = SetNormalizationType(subpra.IndicatorQT.Indicators[19], sNormType, qtNs);
-                                if (sNormType == CalculatorHelpers.NORMALIZATION_TYPES.modzscore.ToString())
-                                {
-                                    //lower and upper maintain % of qtm after norm
-                                    double dbQTL = subpra.IndicatorQT.QTL / subpra.IndicatorQT.QTM;
-                                    double dbQTU = subpra.IndicatorQT.QTU / subpra.IndicatorQT.QTM;
-                                    double dbEndTarget = CalculatorHelpers.ConvertStringToDouble(
-                                       subpra.IndicatorQT.Indicators[8]);
-                                    double dbStdDev = CalculatorHelpers.ConvertStringToDouble(
-                                        subpra.IndicatorQT.Indicators[20]);
-                                    //oecd modified z-scores
-                                    //normalized actual stock = (actual stock - end stock target) / stock stand dev
-                                    subpra.IndicatorQT.QTM = (subpra.IndicatorQT.QTM - dbEndTarget) / dbStdDev;
-                                    subpra.IndicatorQT.QTL = subpra.IndicatorQT.QTM * dbQTL;
-                                    subpra.IndicatorQT.QTU = subpra.IndicatorQT.QTM * dbQTU;
-                                    //targets, goals, and totals are straight summations of indicators
-                                    bNeedsWeight = false;
-                                }
-                                else
-                                {
-                                    //regular norm techniques
-                                    qtMs.Add(subpra.IndicatorQT.QTM);
-                                    //add all of the vectors to 1 vector so that normaliz shows more differences in cis
-                                    qtLs.Add(subpra.IndicatorQT.QTL);
-                                    qtUs.Add(subpra.IndicatorQT.QTU);
-                                    double dbWt = CalculatorHelpers.ConvertStringToDouble(
-                                        subpra.IndicatorQT.Indicators[20]);
-                                    if (dbWt == 0) dbWt = 1;
-                                    //weights for normalizs
-                                    qtWts.Add(dbWt);
-                                }
-
+                                //lower and upper maintain % of qtm after norm
+                                double dbQTL = subpra.IndicatorQT.QTL / subpra.IndicatorQT.QTM;
+                                double dbQTU = subpra.IndicatorQT.QTU / subpra.IndicatorQT.QTM;
+                                double dbEndTarget = subpra.IndicatorQT.Q9;
+                                double dbStdDev = subpra.IndicatorQT.Q21;
+                                //oecd modified z-scores
+                                //normalized actual stock = (actual stock - end stock target) / stock stand dev
+                                subpra.IndicatorQT.QTM = (subpra.IndicatorQT.QTM - dbEndTarget) / dbStdDev;
+                                subpra.IndicatorQT.QTL = subpra.IndicatorQT.QTM * dbQTL;
+                                subpra.IndicatorQT.QTU = subpra.IndicatorQT.QTM * dbQTU;
+                                //targets, goals, and totals are straight summations of indicators
+                                bNeedsWeight = false;
+                            }
+                            else
+                            {
+                                //regular norm techniques
+                                qtMs.Add(subpra.IndicatorQT.QTM);
+                                //add all of the vectors to 1 vector so that normaliz shows more differences in cis
+                                qtLs.Add(subpra.IndicatorQT.QTL);
+                                qtUs.Add(subpra.IndicatorQT.QTU);
+                                double dbWt = subpra.IndicatorQT.Q21;
+                                if (dbWt == 0) dbWt = 1;
+                                //weights for normalizs
+                                qtWts.Add(dbWt);
                             }
                         }
+
                     }
                     else
                     {
@@ -5754,29 +5722,35 @@ namespace DevTreks.Extensions.Algorithms
             {
                 //performance score totals are in Q1, Q2, and Q3; but come from different normalization series
                 //so approach is questionable
-                //total cost
+                //total cea
                 tc.QTM += rf.QTM;
                 tc.QTL += rf.QTL;
                 tc.QTU += rf.QTU;
+                //total cost
+                tc.Q12 += rf.Q12;
+                tc.Q13 += rf.Q13;
+                tc.Q14 += rf.Q14;
                 //total performance
                 tc.Q1 += rf.Q1;
                 tc.Q2 += rf.Q2;
                 tc.Q3 += rf.Q3;
                 //certainty
                 tc.Q17 += rf.Q17;
-            }
-            //220 cea ratio already calculated for lis
-            tr.QTM = tc.QTM;
-            tr.QTL = tc.QTL;
-            tr.QTU = tc.QTU;
+            }  
+            //220: total cost / cea performance quantity - same as li
+            tr.QTM = tc.Q12 / tc.Q1;
+            tr.QTL = tc.Q13 / tc.Q2;
+            tr.QTU = tc.Q14 / tc.Q3;
+            //not simple total
+            //tr.QTM = tc.QTM;
             //display total performance in tr row
             tr.Q1 = tc.Q1;
             tr.Q2 = tc.Q2;
             tr.Q3 = tc.Q3;
             //display the total costs in tr row
-            tr.Q12 = tc.QTM;
-            tr.Q13 = tc.QTL;
-            tr.Q14 = tc.QTU;
+            tr.Q12 = tc.Q12;
+            tr.Q13 = tc.Q13;
+            tr.Q14 = tc.Q14;
             //certainty is average
             tr.Q17 = tc.Q17 / thirdIndicator.IndicatorQT1s.Count();
             locationIndicator.QTM = tr.QTM;
