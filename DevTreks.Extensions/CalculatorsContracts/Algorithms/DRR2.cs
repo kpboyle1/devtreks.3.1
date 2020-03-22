@@ -3178,10 +3178,9 @@ namespace DevTreks.Extensions.Algorithms
             //nonnormalized percent bm and target
             double dbQ25 = 0;
             double dbQ26 = 0;
-            double dbQ27 = 0;
             //category index in norm vector
             int k = 0;
-            int iWtsCount = (nWts.Count == 0) ? 1 : nWts.Count;
+            int iCICount = locationIndexes.Count - 1;
             foreach (var catpra in locationIndexes)
             {
                 //this is the locational index
@@ -3194,8 +3193,8 @@ namespace DevTreks.Extensions.Algorithms
                         //locational index will be done when the TR is scored
                         if (catpra2.Value.Count != 0)
                         {
-                            //220
-                            catpra2.Key.IndicatorQT.Q27 = (catpra2.Key.IndicatorQT.Q22 / dbQ22) * 100;
+                            //220: normalized cis / sum of normalized cis (prior to norming those lis)
+                            catpra2.Key.IndicatorQT.Q27 = (catpra2.Key.IndicatorQT.QTM / dbQTM) * 100;
                         }
                     }
                     //normed
@@ -3211,23 +3210,24 @@ namespace DevTreks.Extensions.Algorithms
                     {
                         //220
                         //for consistency with ci display, store in same q
-                        catpra.Key.IndicatorQT.Q11 = (dbCertainty1 / iWtsCount);
+                        catpra.Key.IndicatorQT.Q11 = (dbCertainty1 / iCICount);
                     }
                     //certainty2
                     if (dbCertainty2 != 0)
                     {
-                        catpra.Key.IndicatorQT.Q12 = (dbCertainty2 / iWtsCount);
+                        catpra.Key.IndicatorQT.Q12 = (dbCertainty2 / iCICount);
                     }
                     //certainty3
                     if (dbCertainty3 != 0)
                     {
-                        catpra.Key.IndicatorQT.Q15 = (dbCertainty3 / iWtsCount);
+                        catpra.Key.IndicatorQT.Q15 = (dbCertainty3 / iCICount);
                     }
                     // 220 benchmark percents based on nonnormd amounts
                     //for locational index they are a simple average of children cis
-                    catpra.Key.IndicatorQT.Q25 = dbQ25 / locationIndexes.Count;
+                    catpra.Key.IndicatorQT.Q25 = dbQ25 / iCICount;
                     //target for current transition state
-                    catpra.Key.IndicatorQT.Q26 = dbQ26 / locationIndexes.Count;
+                    catpra.Key.IndicatorQT.Q26 = dbQ26 / iCICount;
+                    //q27 calculated with trindex
                 }
                 else
                 {
@@ -3241,7 +3241,11 @@ namespace DevTreks.Extensions.Algorithms
                     dbQ24 += catpra.Key.IndicatorQT.Q24;
                     dbQ25 += catpra.Key.IndicatorQT.Q25;
                     dbQ26 += catpra.Key.IndicatorQT.Q26;
-                    dbQ27 += catpra.Key.IndicatorQT.Q27;
+                    foreach (var subpra in catpra.Value)
+                    {
+                        //normalized indicator / sum of normalized indicators (prior to normed cis)
+                        subpra.IndicatorQT.Q27 = (subpra.IndicatorQT.QTM / catpra.Key.IndicatorQT.QTM) * 100;
+                    }
                     //replace each catindex with normalized and weighted result
                     if (nQTMs.Count > k)
                     {
@@ -3263,11 +3267,6 @@ namespace DevTreks.Extensions.Algorithms
                     dbQTM += catpra.Key.IndicatorQT.QTM;
                     dbQTL += catpra.Key.IndicatorQT.QTL;
                     dbQTU += catpra.Key.IndicatorQT.QTU;
-                    //percent total calculation based on nonnormalized cis
-                    foreach(var subpra in catpra.Value)
-                    {
-                        subpra.IndicatorQT.Q27 = (subpra.IndicatorQT.QTM / catpra.Key.IndicatorQT.Q22) * 100;
-                    }
                     //cat index
                     k++;
                     //indicator count
@@ -3670,27 +3669,18 @@ namespace DevTreks.Extensions.Algorithms
                         catpra.Key.IndicatorQT.Q22 = dbQ22;
                         catpra.Key.IndicatorQT.Q23 = dbQ23;
                         catpra.Key.IndicatorQT.Q24 = dbQ24;
-                        if (IsCategoricalIndex(catpra.Key.IndicatorQT.Label))
+                        // 220 benchmark and target percents based on nonnormd amounts after mathexpress run
+                        catpra.Key.IndicatorQT.Q25 = (catpra.Key.IndicatorQT.Q22 / catpra.Key.IndicatorQT.Q13) * 100;
+                        catpra.Key.IndicatorQT.Q26 = (catpra.Key.IndicatorQT.Q22 / catpra.Key.IndicatorQT.Q14) * 100;
+                        //percent contribution of Indicator to catindex prior to further catindex calcs
+                        foreach (var subpra in catpra.Value)
                         {
-                            // 220 benchmark and target percents based on nonnormd amounts after mathexpress run
-                            catpra.Key.IndicatorQT.Q25 = (catpra.Key.IndicatorQT.QTM / catpra.Key.IndicatorQT.Q13) * 100;
-                            catpra.Key.IndicatorQT.Q26 = (catpra.Key.IndicatorQT.QTM / catpra.Key.IndicatorQT.Q14) * 100;
-                            //percent contribution of Indicator to catindex prior to further catindex calcs
-                            foreach (var subpra in catpra.Value)
-                            {
-                                //benchmark
-                                subpra.IndicatorQT.Q25 = (subpra.IndicatorQT.QTM / subpra.IndicatorQT.Q18) * 100;
-                                //target
-                                subpra.IndicatorQT.Q26 = (subpra.IndicatorQT.QTM / subpra.IndicatorQT.Q19) * 100;
-                                //percent total will be done after cis are normalized
-                                //subpra.IndicatorQT.Q27 = (subpra.IndicatorQT.QTM / catpra.Key.IndicatorQT.QTM) * 100;
-                            }
-                        }
-                        else
-                        {
-                            //locational indexes
-                            catpra.Key.IndicatorQT.Q25 = ((catpra.Key.IndicatorQT.QTM / catpra.Key.IndicatorQT.Q13) / catpra.Value.Count) * 100;
-                            catpra.Key.IndicatorQT.Q26 = ((catpra.Key.IndicatorQT.QTM / catpra.Key.IndicatorQT.Q14) / catpra.Value.Count) * 100;
+                            //benchmark
+                            subpra.IndicatorQT.Q25 = (subpra.IndicatorQT.Q22 / subpra.IndicatorQT.Q18) * 100;
+                            //target
+                            subpra.IndicatorQT.Q26 = (subpra.IndicatorQT.Q22 / subpra.IndicatorQT.Q19) * 100;
+                            //percent total will be done after cis are normalized
+                            //subpra.IndicatorQT.Q27 = (subpra.IndicatorQT.QTM / catpra.Key.IndicatorQT.QTM) * 100;
                         }
                         //set norm params
                         sNormType = SetNormalizationType(catpra.Key.IndicatorQT.Q16Unit,
@@ -4456,7 +4446,7 @@ namespace DevTreks.Extensions.Algorithms
                                 //normd
                                 DataResults[i][25] = subpra.IndicatorQT.Q23.ToString("0.0##E+00", CultureInfo.InvariantCulture);
                                 //percentbm
-                                DataResults[i][27] = subpra.IndicatorQT.Q26.ToString("0.0##E+00", CultureInfo.InvariantCulture);
+                                DataResults[i][28] = subpra.IndicatorQT.Q26.ToString("0.0##E+00", CultureInfo.InvariantCulture);
                                 //c1
                                 DataResults[i][31] = subpra.IndicatorQT.Q12.ToString("0.0##E+00", CultureInfo.InvariantCulture);
                             }
@@ -5572,8 +5562,10 @@ namespace DevTreks.Extensions.Algorithms
             double dbQ22 = 0;
             double dbQ23 = 0;
             double dbQ24 = 0;
-            //double dbQ25 = 0;
-            //double dbQ26 = 0;
+            double dbQ25 = 0;
+            double dbQ26 = 0;
+            //li count
+            int iLICount = 0;
             //category index in norm vector
             int k = 0;
             foreach (var locpra in trIndexes)
@@ -5586,12 +5578,15 @@ namespace DevTreks.Extensions.Algorithms
                 {
                     foreach (var locindex in locpra.Value)
                     {
+                        iLICount += 1;
                         dbCertainty1 += locindex.IndicatorQT.Q11;
                         dbCertainty2 += locindex.IndicatorQT.Q12;
                         dbCertainty3 += locindex.IndicatorQT.Q15;
                         dbQ22 += locindex.IndicatorQT.Q22;
                         dbQ23 += locindex.IndicatorQT.Q23;
                         dbQ24 += locindex.IndicatorQT.Q24;
+                        dbQ25 += locindex.IndicatorQT.Q25;
+                        dbQ26 += locindex.IndicatorQT.Q26;
                         //replace each catindex with normalized and weighted result
                         if (bNeedsWeight)
                         {
@@ -5617,7 +5612,7 @@ namespace DevTreks.Extensions.Algorithms
                     {
                         //add to DataResult, rowindex stored in groupid for convenience
                         int iRowIndex = locindex.IndicatorQT.GroupId;
-                        //subalgo15 convention
+                        //normalized li / sum of normalized lis
                         locindex.IndicatorQT.Q27 = (locindex.IndicatorQT.QTM / dbQTM) * 100;
                         //display normd and wtd results
                         if (iRowIndex != 0)
@@ -5670,17 +5665,17 @@ namespace DevTreks.Extensions.Algorithms
                     //certainty1
                     if (dbCertainty1 != 0)
                     {
-                        locpra.Key.IndicatorQT.Q11 = dbCertainty1 / nWts.Count;
+                        locpra.Key.IndicatorQT.Q11 = dbCertainty1 / iLICount;
                     }
                     //certainty2
                     if (dbCertainty2 != 0)
                     {
-                        locpra.Key.IndicatorQT.Q12 = dbCertainty2 / nWts.Count;
+                        locpra.Key.IndicatorQT.Q12 = dbCertainty2 / iLICount;
                     }
                     //certainty3
                     if (dbCertainty3 != 0)
                     {
-                        locpra.Key.IndicatorQT.Q15 = dbCertainty3 / nWts.Count;
+                        locpra.Key.IndicatorQT.Q15 = dbCertainty3 / iLICount;
                     }
                     //return result byref
                     tr.QTM = locpra.Key.IndicatorQT.QTM;
@@ -5692,9 +5687,9 @@ namespace DevTreks.Extensions.Algorithms
                     tr.Q22 = locpra.Key.IndicatorQT.Q22;
                     tr.Q23 = locpra.Key.IndicatorQT.Q23;
                     tr.Q24 = locpra.Key.IndicatorQT.Q24;
-                    tr.Q25 = locpra.Key.IndicatorQT.Q25;
-                    tr.Q26 = locpra.Key.IndicatorQT.Q26;
-                    tr.Q27 = locpra.Key.IndicatorQT.Q27;
+                    tr.Q25 = dbQ25 / iLICount;
+                    tr.Q26 = dbQ26 / iLICount;
+                    tr.Q27 = 0;
                     // and locationind further calculations
                     locationIndicator.QTM = locpra.Key.IndicatorQT.QTM;
                     locationIndicator.QTL = locpra.Key.IndicatorQT.QTL;
@@ -5705,9 +5700,9 @@ namespace DevTreks.Extensions.Algorithms
                     locationIndicator.Q22 = locpra.Key.IndicatorQT.Q22;
                     locationIndicator.Q23 = locpra.Key.IndicatorQT.Q23;
                     locationIndicator.Q24 = locpra.Key.IndicatorQT.Q24;
-                    locationIndicator.Q25 = locpra.Key.IndicatorQT.Q25;
-                    locationIndicator.Q26 = locpra.Key.IndicatorQT.Q26;
-                    locationIndicator.Q27 = locpra.Key.IndicatorQT.Q27;
+                    locationIndicator.Q25 = dbQ25 / iLICount;
+                    locationIndicator.Q26 = dbQ26 / iLICount;
+                    locationIndicator.Q27 = 0;
                 }
             }
             bHasCalculated = true;
