@@ -22,7 +22,7 @@ namespace DevTreks.Helpers
     /// <summary>
     ///Purpose:		static Html extensions for presentation layer xhtml manipulation
     ///Author:		www.devtreks.org
-    ///Date:		2018, September
+    ///Date:		2020, March
     ///References:	www.devtreks.org
     /// </summary>
     public static class HtmlHelperExtensions
@@ -886,7 +886,7 @@ namespace DevTreks.Helpers
             using (StringWriter result = new StringWriter())
             {
                 result.WriteLine(
-                    "Current version: DevTreks 2.2.0, March 20, 2020");
+                    "Current version: DevTreks 2.2.0, March 22, 2020");
                 return new HtmlString(result.ToString());
             }
         }
@@ -6390,25 +6390,25 @@ namespace DevTreks.Helpers
                 oResolver.Credentials = CredentialCache.DefaultCredentials;
                 //create an XsltArgumentList.
                 StylesheetHelper styleHelper = new StylesheetHelper();
-                //210 refactor: get stylesheeturi and extObject directly (not byref)
-                ContentURI stylesheetURI = styleHelper.GetStyleSheetURI(model, displayDocType);
-                stylesheetReader = await styleHelper.GetStyleSheet(model, displayDocType,
-                    stylesheetURI);
-                Object extensionObject = styleHelper.GetDisplayObjects(stylesheetURI);
+                //210 and 220 refactor: get stylesheeturi and extObject directly (not byref)
                 bool bHasLoadedStyle = false;
-                XsltArgumentList oXslArgList = new XsltArgumentList();
-                if (stylesheetReader != null
-                    && string.IsNullOrEmpty(model.ErrorMessage))
+                ContentURI stylesheetURI = styleHelper.GetStyleSheetURI(model, displayDocType);
+                if (stylesheetURI != null)
                 {
-                    using (stylesheetReader)
+                    stylesheetReader = await styleHelper.GetStyleSheet(model, displayDocType,
+                    stylesheetURI);
+                    Object extensionObject = styleHelper.GetDisplayObjects(stylesheetURI);
+                    XsltArgumentList oXslArgList = new XsltArgumentList();
+                    if (stylesheetReader != null
+                        && string.IsNullOrEmpty(model.ErrorMessage))
                     {
-                        oXslt.Load(stylesheetReader, oXsltSettings, oResolver);
-                        bHasLoadedStyle = true;
+                        using (stylesheetReader)
+                        {
+                            oXslt.Load(stylesheetReader, oXsltSettings, oResolver);
+                            bHasLoadedStyle = true;
+                        }
                     }
-                }
-                else if (string.IsNullOrEmpty(model.ErrorMessage))
-                {
-                    if (stylesheetURI != null)
+                    else if (string.IsNullOrEmpty(model.ErrorMessage))
                     {
                         if (stylesheetURI.URIDataManager.FileSystemPath != string.Empty)
                         {
@@ -6424,53 +6424,54 @@ namespace DevTreks.Helpers
                             return new HtmlString(model.ErrorMessage);
                         }
                     }
-                }
-                if (bHasLoadedStyle
-                    && string.IsNullOrEmpty(model.ErrorMessage))
-                {
-                    // add args
-                    if (styleParams != null)
+
+                    if (bHasLoadedStyle
+                        && string.IsNullOrEmpty(model.ErrorMessage))
                     {
-                        if (extensionObject != null)
+                        // add args
+                        if (styleParams != null)
                         {
-                            oXslArgList.AddExtensionObject(
-                                stylesheetURI.URIDataManager.ExtensionObjectNamespace,
-                                extensionObject);
+                            if (extensionObject != null)
+                            {
+                                oXslArgList.AddExtensionObject(
+                                    stylesheetURI.URIDataManager.ExtensionObjectNamespace,
+                                    extensionObject);
+                            }
+                            foreach (KeyValuePair<string, string> kvp in styleParams)
+                            {
+                                if (kvp.Value == null)
+                                {
+                                    oXslArgList.AddParam(kvp.Key, "", GeneralHelpers.NONE);
+                                }
+                                else
+                                {
+                                    oXslArgList.AddParam(kvp.Key, "", kvp.Value);
+                                }
+                            }
                         }
-                        foreach (KeyValuePair<string, string> kvp in styleParams)
+                        try
                         {
-                            if (kvp.Value == null)
-                            {
-                                oXslArgList.AddParam(kvp.Key, "", GeneralHelpers.NONE);
-                            }
-                            else
-                            {
-                                oXslArgList.AddParam(kvp.Key, "", kvp.Value);
-                            }
+                            //writer can't be init with a StringWriter or can't use xslt html output method
+                            //try using existing xml output method in stylesheets
+                            //after all Stylesheet functions are refactored to produce good html
+                            oXslt.Transform(reader, oXslArgList, result);
                         }
+                        catch (Exception x)
+                        {
+                            string sErrorCheck = x.ToString();
+                            model.ErrorMessage
+                               = string.Concat(sErrorCheck, DevTreks.Exceptions.DevTreksErrors.MakeStandardErrorMsg(
+                               string.Empty, "STYLEHELPER_BADXMLORHTML"));
+                        }
+                        //help the GC out;
+                        oXslArgList.Clear();
                     }
-                    try
+                    else
                     {
-                        //writer can't be init with a StringWriter or can't use xslt html output method
-                        //try using existing xml output method in stylesheets
-                        //after all Stylesheet functions are refactored to produce good html
-                        oXslt.Transform(reader, oXslArgList, result);
-                    }
-                    catch (Exception x)
-                    {
-                        string sErrorCheck = x.ToString();
                         model.ErrorMessage
-                           = string.Concat(sErrorCheck, DevTreks.Exceptions.DevTreksErrors.MakeStandardErrorMsg(
-                           string.Empty, "STYLEHELPER_BADXMLORHTML"));
+                                = DevTreks.Exceptions.DevTreksErrors.MakeStandardErrorMsg(
+                                string.Empty, "STYLEHELPER_NOSTYLE");
                     }
-                    //help the GC out;
-                    oXslArgList.Clear();
-                }
-                else
-                {
-                    model.ErrorMessage
-                            = DevTreks.Exceptions.DevTreksErrors.MakeStandardErrorMsg(
-                            string.Empty, "STYLEHELPER_NOSTYLE");
                 }
                 return new HtmlString(result.ToString());
             }
